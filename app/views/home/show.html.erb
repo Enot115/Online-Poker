@@ -1,0 +1,60 @@
+<% content_for :title, "Лобби" %>
+
+<section class="lobby-heading">
+  <div>
+    <p class="eyebrow">ПЯТНИЦА, 9 ОКТЯБРЯ · HOLDEM NO-LIMIT</p>
+    <h1>Столы <span>ждут.</span></h1>
+    <p class="screen-lead">Выберите игру и присоединяйтесь к раздаче.</p>
+  </div>
+  <div class="lobby-player-status">
+    <span class="status-line <%= "status-muted" unless logged_in? %>"><span class="status-dot"></span><%= logged_in? ? "Вы авторизованы" : "Вы не вошли в аккаунт" %></span>
+    <% unless logged_in? %>
+      <%= link_to "Войти, чтобы сохранить прогресс", login_path, class: "text-link" %>
+    <% end %>
+  </div>
+</section>
+
+<div class="lobby-grid">
+  <section class="lobby-main" aria-labelledby="tables-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">СЕЙЧАС ИГРАЮТ</p><h2 id="tables-title">Открытые столы <span class="live-count">03</span></h2></div>
+      <button class="filter-button" type="button"><span aria-hidden="true">☷</span> Фильтр</button>
+    </div>
+
+    <div class="table-list">
+      <article class="lobby-table lobby-table-featured">
+        <div class="table-preview table-preview-green"><span class="preview-suit">♠</span><span class="preview-name">ТЁПЛЫЙ СТОЛ</span></div>
+        <div class="lobby-table-info"><div class="table-title-row"><h3>Тёплый стол</h3><span class="tag tag-open">Идёт игра</span></div><p>Холдем без лимита <span>·</span> Уровень 1–5</p><div class="table-meta"><span><i class="seat-dots">●●●●●○</i> 5 / 6 мест</span><span>Блайнды <b>10 / 20</b></span></div></div>
+        <div class="lobby-table-action"><div class="buy-in"><small>Вход</small><strong>200 <i>◈</i></strong></div><%= link_to "К столу", table_path(1), class: "button button-small" %></div>
+      </article>
+      <article class="lobby-table">
+        <div class="table-preview table-preview-blue"><span class="preview-suit">♦</span><span class="preview-name">ПОСЛЕ РАБОТЫ</span></div>
+        <div class="lobby-table-info"><div class="table-title-row"><h3>После работы</h3><span class="tag tag-open">Идёт игра</span></div><p>Холдем без лимита <span>·</span> Любой уровень</p><div class="table-meta"><span><i class="seat-dots">●●●○○○</i> 3 / 6 мест</span><span>Блайнды <b>5 / 10</b></span></div></div>
+        <div class="lobby-table-action"><div class="buy-in"><small>Вход</small><strong>100 <i>◈</i></strong></div><%= link_to "К столу", table_path(2), class: "button button-small button-outline" %></div>
+      </article>
+      <article class="lobby-table">
+        <div class="table-preview table-preview-rust"><span class="preview-suit">♥</span><span class="preview-name">ТИХАЯ РАЗДАЧА</span></div>
+        <div class="lobby-table-info"><div class="table-title-row"><h3>Тихая раздача</h3><span class="tag tag-waiting">Ожидание</span></div><p>Холдем без лимита <span>·</span> Уровень 3–10</p><div class="table-meta"><span><i class="seat-dots">●●○○○○</i> 2 / 6 мест</span><span>Блайнды <b>25 / 50</b></span></div></div>
+        <div class="lobby-table-action"><div class="buy-in"><small>Вход</small><strong>500 <i>◈</i></strong></div><%= link_to "К столу", table_path(3), class: "button button-small button-outline" %></div>
+      </article>
+    </div>
+    <div class="lobby-footnote"><span class="status-dot"></span> Все столы используют только игровые фишки. Денежных ставок нет.</div>
+  </section>
+
+  <aside class="lobby-rail">
+    <section class="earn-card">
+      <div class="earn-card-top"><span class="earn-icon" aria-hidden="true">＋</span><span class="tag tag-light">ЕЖЕДНЕВНО</span></div>
+      <p class="eyebrow">НЕ ХВАТАЕТ ФИШЕК?</p><h2>Решите пример.<br>Продолжайте игру.</h2>
+      <p>Правильный ответ пополнит игровой баланс.</p>
+      <div class="earn-reward"><span>Награда за задачу</span><strong>+250 <i>◈</i></strong></div>
+      <%= link_to "Перейти к задаче", earn_chips_path, class: "button button-light button-wide" %>
+      <div class="progress-label"><span>Сегодняшняя задача</span><span>0 / 1</span></div><div class="progress-track"><span></span></div>
+    </section>
+
+    <section class="quick-profile">
+      <div class="quick-profile-head"><div class="avatar avatar-green"><%= logged_in? ? current_user.name.first.upcase : "Г" %></div><div><h3><%= logged_in? ? current_user.name : "Гость" %></h3><p><%= logged_in? ? "Начинающий игрок" : "Профиль игрока" %></p></div></div>
+      <div class="quick-stats"><div><strong>0</strong><span>Игр сыграно</span></div><div><strong>—</strong><span>Лучший результат</span></div></div>
+      <%= link_to "Открыть профиль", profile_path, class: "profile-link" %>
+    </section>
+  </aside>
+</div>

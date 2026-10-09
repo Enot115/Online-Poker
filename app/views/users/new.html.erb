@@ -1,0 +1,18 @@
+<section class="auth-layout">
+  <div class="auth-intro"><p class="eyebrow">НОВЫЙ ИГРОК</p><h1>Ваше место<br>за столом.</h1><p class="lead">Создайте аккаунт, чтобы начать зарабатывать игровые фишки.</p></div>
+  <div class="auth-form-wrap">
+    <h2>Регистрация</h2>
+    <p class="form-note">Все поля обязательны</p>
+    <% if @user.errors.any? %>
+      <div class="form-errors"><%= @user.errors.full_messages.to_sentence %></div>
+    <% end %>
+    <%= form_with model: @user, url: registration_path, class: "auth-form" do |form| %>
+      <div class="field"><%= form.label :name, "Ваше имя" %><%= form.text_field :name, autocomplete: "name", maxlength: 60, required: true, autofocus: true, placeholder: "Например, Алексей" %></div>
+      <div class="field"><%= form.label :email, "Email" %><%= form.email_field :email, autocomplete: "email", required: true, placeholder: "you@example.com" %></div>
+      <div class="field"><%= form.label :password, "Пароль" %><%= form.password_field :password, autocomplete: "new-password", minlength: 8, required: true, placeholder: "Не менее 8 символов" %></div>
+      <div class="field"><%= form.label :password_confirmation, "Повторите пароль" %><%= form.password_field :password_confirmation, autocomplete: "new-password", minlength: 8, required: true %></div>
+      <%= form.submit "Создать аккаунт", class: "button button-wide" %>
+    <% end %>
+    <p class="form-footer">Уже зарегистрированы? <%= link_to "Войти", login_path %></p>
+  </div>
+</section>

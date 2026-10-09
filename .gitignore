@@ -1,0 +1,8 @@
+/.bundle
+/log/*
+/storage/*
+/tmp/*
+/config/master.key
+/config/credentials/*.key
+/vendor
+*.sqlite3

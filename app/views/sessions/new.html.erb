@@ -1,0 +1,13 @@
+<section class="auth-layout">
+  <div class="auth-intro"><p class="eyebrow">С ВОЗВРАЩЕНИЕМ</p><h1>Игра<br>продолжается.</h1><p class="lead">Войдите, чтобы вернуться к своим фишкам и игровому столу.</p></div>
+  <div class="auth-form-wrap">
+    <h2>Вход</h2>
+    <p class="form-note">Введите данные аккаунта</p>
+    <%= form_with url: login_path, class: "auth-form" do |form| %>
+      <div class="field"><%= form.label :email, "Email" %><%= form.email_field :email, autocomplete: "email", required: true, autofocus: true, placeholder: "you@example.com" %></div>
+      <div class="field"><%= form.label :password, "Пароль" %><%= form.password_field :password, autocomplete: "current-password", required: true %></div>
+      <%= form.submit "Войти", class: "button button-wide" %>
+    <% end %>
+    <p class="form-footer">Ещё нет аккаунта? <%= link_to "Зарегистрироваться", registration_path %></p>
+  </div>
+</section>

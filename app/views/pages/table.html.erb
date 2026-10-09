@@ -1,0 +1,37 @@
+<% content_for :title, "Игровой стол" %>
+
+<div class="screen-topline">
+  <%= link_to "← Лобби", root_path, class: "back-link" %>
+  <span class="prototype-label"><span></span> ДЕМО-РАЗДАЧА</span>
+</div>
+<section class="table-page-heading">
+  <div><p class="eyebrow">ХОЛДЕМ · БЕЗ ЛИМИТА</p><h1>Тёплый стол <span class="table-id">№ <%= params[:id] %></span></h1></div>
+  <div class="table-page-stats"><span>Блайнды<strong>10 / 20</strong></span><span>Игроки<strong>5 из 6</strong></span><span>Ваш стек<strong>1 240 <i>◈</i></strong></span></div>
+</section>
+
+<div class="game-layout">
+  <section class="game-column" aria-label="Игровой стол">
+    <div class="poker-table-wrap">
+      <div class="poker-table">
+        <div class="table-center-mark">♠ <span>POKER ROOM</span></div>
+        <div class="pot-display"><span>БАНК</span><strong>360 <i>◈</i></strong></div>
+        <div class="community-cards" aria-label="Общие карты"><span class="playing-card">A<small>♠</small></span><span class="playing-card card-red">10<small>♥</small></span><span class="playing-card">7<small>♣</small></span><span class="playing-card card-back">◆</span><span class="playing-card card-back">◆</span></div>
+        <div class="table-seat seat-top"><div class="avatar avatar-lilac">М</div><span>Миша_77</span><b>860 <i>◈</i></b></div>
+        <div class="table-seat seat-left"><div class="avatar avatar-coral">А</div><span>annika</span><b>1 540 <i>◈</i></b></div>
+        <div class="table-seat seat-right"><div class="avatar avatar-blue">Д</div><span>den_p</span><b>920 <i>◈</i></b></div>
+        <div class="table-seat seat-bottom-left"><div class="avatar avatar-yellow">К</div><span>Костя</span><b>2 010 <i>◈</i></b></div>
+        <div class="table-seat seat-you"><div class="avatar avatar-player"><%= logged_in? ? current_user.name.first.upcase : "В" %></div><span><%= logged_in? ? current_user.name : "Вы" %> <em>ВЫ</em></span><b>1 240 <i>◈</i></b><div class="hole-cards"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span></div></div>
+        <span class="dealer-chip">D</span>
+      </div>
+    </div>
+    <div class="turn-banner"><span class="turn-indicator"></span><strong>Ваш ход</strong><span>До вас: Миша поставил 40 фишек</span><small>00:18</small></div>
+    <div class="game-actions"><button type="button" class="button button-action-fold">Сбросить</button><button type="button" class="button button-action-check">Чек</button><button type="button" class="button">Уравнять <span>40 ◈</span></button><button type="button" class="raise-button">Повысить <span>⌃</span></button></div>
+    <div class="action-stub-note">Действия за столом пока недоступны в демо-режиме</div>
+  </section>
+
+  <aside class="game-rail">
+    <section class="rail-panel hand-panel"><div class="panel-heading"><h2>Ваша рука</h2><span class="tag tag-open">Тёрн</span></div><p>Пара королей</p><div class="hand-preview"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span><span class="hand-strength">СИЛЬНАЯ<br>КОМБИНАЦИЯ</span></div><div class="hand-meta"><span>Шанс банка</span><b>18%</b></div></section>
+    <section class="rail-panel players-panel"><div class="panel-heading"><h2>За столом</h2><span>5 / 6</span></div><div class="player-line"><div class="avatar avatar-lilac">М</div><span>Миша_77<small>Дилер</small></span><b>860</b></div><div class="player-line"><div class="avatar avatar-coral">А</div><span>annika<small>Малый блайнд</small></span><b>1 540</b></div><div class="player-line"><div class="avatar avatar-blue">Д</div><span>den_p<small>Большой блайнд</small></span><b>920</b></div><div class="player-line"><div class="avatar avatar-yellow">К</div><span>Костя<small>В игре</small></span><b>2 010</b></div><div class="player-line player-line-you"><div class="avatar avatar-player"><%= logged_in? ? current_user.name.first.upcase : "В" %></div><span><%= logged_in? ? current_user.name : "Вы" %><small>Ваше место</small></span><b>1 240</b></div></section>
+    <section class="rail-panel history-panel"><div class="panel-heading"><h2>История раздачи</h2><span class="history-live">● В эфире</span></div><p><b>Миша_77</b> повысил до <strong>40</strong></p><p><b>annika</b> уравняла <strong>40</strong></p><p><b>den_p</b> уравнял <strong>40</strong></p></section>
+  </aside>
+</div>
