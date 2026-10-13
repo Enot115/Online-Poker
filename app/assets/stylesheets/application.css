@@ -761,3 +761,104 @@ h1 span { color: var(--green); }
   .activity-row strong { max-width: 190px; font-size: 9px; }
   .activity-row > b { font-size: 9px; }
 }
+
+/* Premium club treatment for the lobby */
+.lobby-shell {
+  background-color: #101d17;
+  background-image:
+    linear-gradient(135deg, rgba(255,255,255,0.018) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.018) 50%, rgba(255,255,255,0.018) 75%, transparent 75%);
+  background-size: 8px 8px;
+}
+.lobby-shell .app-header {
+  border-bottom-color: rgba(218, 187, 119, 0.2);
+  background: rgba(15, 29, 23, 0.96);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.lobby-shell .brand { color: #f3eddb; }
+.lobby-shell .brand-mark {
+  border: 1px solid rgba(220, 190, 123, 0.55);
+  background: linear-gradient(145deg, #315b42, #183629);
+  color: #e9cf8b;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.lobby-shell .nav-item { color: #aab5a9; }
+.lobby-shell .nav-item:hover, .lobby-shell .nav-item.is-active { color: #f0d28b; }
+.lobby-shell .nav-item.is-active::after { background: #d8b86e; }
+.lobby-shell .header-balance { border-right-color: rgba(218, 187, 119, 0.22); }
+.lobby-shell .balance-chip {
+  background: linear-gradient(145deg, #f0d890, #b28d45);
+  color: #263326;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);
+}
+.lobby-shell .header-balance strong, .lobby-shell .account-name { color: #f3eddb; }
+.lobby-shell .header-balance small { color: #aab5a9; }
+.lobby-shell .header-account > .nav-link { color: #e5d6ae; }
+.lobby-shell .header-account > .button {
+  background: linear-gradient(135deg, #d6b76d, #b18b45);
+  color: #1b281e;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+.lobby-shell .header-account > form .button-quiet {
+  border-color: rgba(230, 216, 180, 0.28);
+  background: transparent;
+  color: #e5d6ae;
+}
+.lobby-shell .lobby-heading { border-bottom-color: rgba(218, 187, 119, 0.24); }
+.lobby-shell .lobby-heading .eyebrow,
+.lobby-shell .section-heading .eyebrow { color: #d6b76d; }
+.lobby-shell .lobby-heading h1,
+.lobby-shell .section-heading h2 { color: #f3eddb; }
+.lobby-shell .lobby-heading h1 span { color: #e0c27b; }
+.lobby-shell .screen-lead { color: #b4beb2; }
+.lobby-shell .lobby-player-status .status-line { color: #c8d1c4; }
+.lobby-shell .lobby-player-status .status-muted { color: #aab5a9; }
+.lobby-shell .lobby-player-status .text-link { color: #e0c27b; }
+.lobby-shell .live-count {
+  background: rgba(214, 183, 109, 0.16);
+  color: #e6c978;
+}
+.lobby-shell .filter-button {
+  border-color: rgba(218, 187, 119, 0.3);
+  background: rgba(255,255,255,0.04);
+  color: #ded8c8;
+}
+.lobby-shell .filter-button:hover { background: rgba(214, 183, 109, 0.12); }
+.lobby-shell .lobby-table {
+  border-color: rgba(226, 208, 164, 0.3);
+  background: linear-gradient(145deg, #f6f2e7, #ebe5d5);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.lobby-shell .lobby-table:hover {
+  border-color: #d6b76d;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.lobby-shell .lobby-table-featured { border-left: 4px solid #c9a653; }
+.lobby-shell .lobby-table-action .button:not(.button-outline) {
+  background: linear-gradient(135deg, #d6b76d, #b38e49);
+  color: #1c2d22;
+  box-shadow: 0 8px 16px rgba(143, 108, 43, 0.2);
+}
+.lobby-shell .lobby-table-action .button:not(.button-outline):hover { filter: brightness(1.06); }
+.lobby-shell .button-outline {
+  border-color: rgba(82, 94, 68, 0.28);
+  background: rgba(255,255,255,0.42);
+  color: #35543c;
+}
+.lobby-shell .button-outline:hover {
+  border-color: #9b7b3e;
+  background: #f5edda;
+  color: #263d2d;
+}
+.lobby-shell .lobby-footnote { color: #aab5a9; }
+.lobby-shell .lobby-footnote .status-dot { background: #c4a45c; }
+.lobby-shell .earn-card {
+  border: 1px solid rgba(218, 187, 119, 0.42);
+  background: linear-gradient(145deg, #28543c, #173729 78%);
+  box-shadow: 0 18px 34px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.lobby-shell .quick-profile {
+  border-color: rgba(226, 208, 164, 0.3);
+  background: linear-gradient(145deg, #f6f2e7, #ebe5d5);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+}
+.lobby-shell .flash { border: 1px solid rgba(218, 187, 119, 0.25); }
