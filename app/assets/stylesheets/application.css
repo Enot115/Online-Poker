@@ -357,6 +357,7 @@ h1 span { color: var(--green); }
 .progress-label { display: flex; justify-content: space-between; margin: 17px 0 7px; color: #c2d4c4; font-size: 9px; }
 .progress-track, .level-track { height: 4px; overflow: hidden; border-radius: 8px; background: #ffffff36; }
 .progress-track span { display: block; width: 8%; height: 100%; border-radius: inherit; background: var(--lime); }
+.progress-track span.is-complete { width: 100%; }
 .quick-profile, .rail-panel, .streak-panel, .account-panel {
   padding: 17px;
   border: 1px solid rgba(20, 52, 40, 0.08);
@@ -414,6 +415,9 @@ h1 span { color: var(--green); }
 }
 .table-center-mark { position: absolute; top: 19%; left: 50%; display: grid; justify-items: center; gap: 0; transform: translateX(-50%); color: #d5e7c4; font-size: 21px; opacity: .35; }
 .table-center-mark span { font-size: 7px; font-weight: 700; letter-spacing: 1.5px; }
+.table-status { position: absolute; top: 48%; left: 50%; display: grid; gap: 6px; transform: translate(-50%, -50%); color: #e1ebd5; text-align: center; }
+.table-status strong { color: #f0d28b; font: 700 12px "Manrope", sans-serif; }
+.table-status span { color: #c7d7c5; font-size: 10px; }
 .pot-display { position: absolute; top: 34%; left: 50%; display: grid; justify-items: center; gap: 3px; transform: translateX(-50%); }
 .pot-display > span { color: #c7ddc3; font-size: 8px; font-weight: 700; letter-spacing: 1px; }
 .pot-display strong { font: 700 15px "Manrope", sans-serif; }
@@ -474,6 +478,7 @@ h1 span { color: var(--green); }
 .seat-left { top: 39%; left: -39px; }
 .seat-right { top: 39%; right: -39px; }
 .seat-bottom-left { bottom: -32px; left: 22%; }
+.seat-bottom-right { right: 22%; bottom: -32px; }
 .seat-you { bottom: -35px; left: 50%; min-width: 126px; border: 1px solid rgba(213, 238, 135, 0.9); background: rgba(18, 61, 43, 0.92); transform: translateX(-50%); }
 .seat-you em { margin-left: 3px; color: var(--lime); font-size: 7px; font-style: normal; }
 .hole-cards { display: flex; gap: 5px; margin-top: 3px; }
@@ -615,6 +620,10 @@ h1 span { color: var(--green); }
 .activity-row strong { overflow: hidden; color: #3e4b41; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .activity-row small { color: #89928a; font-size: 9px; }
 .activity-row > b { margin-left: auto; font-size: 10px; white-space: nowrap; }
+.lobby-empty, .empty-players { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.challenge-completed { margin: 18px 0 0; color: #386247; font-size: 13px; font-weight: 700; }
+.challenge-sign-in { margin: 18px 0 0; color: #4e5c50; font-size: 12px; }
+.challenge-sign-in a { color: #386247; font-weight: 700; }
 .positive-value { color: #388050; }
 .negative-value { color: #9c6656; }
 .profile-balance { display: grid; justify-items: start; padding: 18px; border-radius: 5px; background: var(--green-dark); color: white; }
@@ -686,6 +695,7 @@ h1 span { color: var(--green); }
   .seat-left { left: -27px; }
   .seat-right { right: -27px; }
   .seat-bottom-left { left: 13%; }
+  .seat-bottom-right { right: 13%; }
   .seat-you { min-width: 102px; }
   .community-cards { gap: 3px; }
   .community-cards .playing-card { width: 34px; height: 49px; padding: 4px; font-size: 15px; }
@@ -737,6 +747,7 @@ h1 span { color: var(--green); }
   .seat-left { left: -21px; }
   .seat-right { right: -21px; }
   .seat-bottom-left { left: 5%; }
+  .seat-bottom-right { right: 5%; }
   .seat-you { min-width: 91px; }
   .community-cards { gap: 2px; }
   .community-cards .playing-card { width: 28px; height: 42px; padding: 3px; font-size: 13px; }

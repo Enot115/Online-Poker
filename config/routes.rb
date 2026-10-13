@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy", as: :logout
   
   get "/tables/:id", to: "pages#table", as: :table
+  post "/tables/:id/join", to: "poker_tables#join", as: :join_table
+  delete "/tables/:id/leave", to: "poker_tables#leave", as: :leave_table
   get "/earn", to: "pages#earn", as: :earn_chips
+  post "/daily-challenge/solve", to: "daily_challenge_completions#create", as: :solve_daily_challenge
   get "/profile", to: "pages#profile", as: :profile
 end

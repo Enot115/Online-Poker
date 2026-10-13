@@ -2,11 +2,11 @@
 
 <div class="screen-topline">
   <%= link_to "← Лобби", root_path, class: "back-link" %>
-  <span class="prototype-label"><span></span> ДЕМО-РАЗДАЧА</span>
+  <span class="prototype-label"><span></span> ИГРОВОЙ СТОЛ</span>
 </div>
 <section class="table-page-heading">
-  <div><p class="eyebrow">ХОЛДЕМ · БЕЗ ЛИМИТА</p><h1>Тёплый стол <span class="table-id">№ <%= params[:id] %></span></h1></div>
-  <div class="table-page-stats"><span>Блайнды<strong>10 / 20</strong></span><span>Игроки<strong><%= logged_in? ? "5 из 6" : "4 из 6" %></strong></span><span><%= logged_in? ? "Ваш стек" : "Режим" %><strong><%= logged_in? ? "1 240 ◈" : "Просмотр" %></strong></span></div>
+  <div><p class="eyebrow">ХОЛДЕМ · БЕЗ ЛИМИТА</p><h1><%= @table.name %> <span class="table-id">№ <%= @table.id %></span></h1></div>
+  <div class="table-page-stats"><span>Блайнды<strong><%= @table.small_blind %> / <%= @table.big_blind %></strong></span><span>Игроки<strong><%= @seats.size %> из <%= @table.max_players %></strong></span><span><%= @current_seat ? "Ваш стек" : "Бай-ин" %><strong><%= @current_seat ? @current_seat.stack : @table.buy_in %> ◈</strong></span></div>
 </section>
 
 <div class="game-layout">
@@ -14,37 +14,55 @@
     <div class="poker-table-wrap">
       <div class="poker-table">
         <div class="table-center-mark">♠ <span>POKER ROOM</span></div>
-        <div class="pot-display"><span>БАНК</span><strong>360 <i>◈</i></strong></div>
-        <div class="community-cards" aria-label="Общие карты"><span class="playing-card">A<small>♠</small></span><span class="playing-card card-red">10<small>♥</small></span><span class="playing-card">7<small>♣</small></span><span class="playing-card card-back">◆</span><span class="playing-card card-back">◆</span></div>
-        <div class="table-seat seat-top"><div class="avatar avatar-lilac">М</div><span>Миша_77</span><b>860 <i>◈</i></b></div>
-        <div class="table-seat seat-left"><div class="avatar avatar-coral">А</div><span>annika</span><b>1 540 <i>◈</i></b></div>
-        <div class="table-seat seat-right"><div class="avatar avatar-blue">Д</div><span>den_p</span><b>920 <i>◈</i></b></div>
-        <div class="table-seat seat-bottom-left"><div class="avatar avatar-yellow">К</div><span>Костя</span><b>2 010 <i>◈</i></b></div>
-        <% if logged_in? %>
-          <div class="table-seat seat-you"><div class="avatar avatar-player"><%= current_user.name.first.upcase %></div><span><%= current_user.name %> <em>ВЫ</em></span><b>1 240 <i>◈</i></b><div class="hole-cards"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span></div></div>
+          <div class="table-status"><strong><%= @table.active? ? "СТОЛ ОТКРЫТ" : "СТОЛ ЗАКРЫТ" %></strong><span><%= @seats.empty? ? "Ожидает игроков" : "Места заняты: #{@seats.size}" %></span></div>
+          <% other_positions = %w[seat-top seat-left seat-right seat-bottom-left seat-bottom-right] %>
+          <% other_seat_index = 0 %>
+          <% @seats.each do |seat| %>
+            <% if seat.user_id == current_user&.id %>
+              <% seat_position = "seat-you" %>
+            <% else %>
+              <% seat_position = other_positions[other_seat_index % other_positions.length] %>
+              <% other_seat_index += 1 %>
+            <% end %>
+            <div class="table-seat <%= seat_position %>"><div class="avatar avatar-player"><%= seat.user.name.first.upcase %></div><span><%= seat.user.name %><%= " (вы)" if seat.user_id == current_user&.id %></span><b><%= seat.stack %> <i>◈</i></b></div>
         <% end %>
-        <span class="dealer-chip">D</span>
       </div>
     </div>
-    <% if logged_in? %>
-      <div class="turn-banner"><span class="turn-indicator"></span><strong>Ваш ход</strong><span>До вас: Миша поставил 40 фишек</span><small>00:18</small></div>
-      <div class="game-actions"><button type="button" class="button button-action-fold">Сбросить</button><button type="button" class="button button-action-check">Чек</button><button type="button" class="button">Уравнять <span>40 ◈</span></button><button type="button" class="raise-button">Повысить <span>⌃</span></button></div>
-      <div class="action-stub-note">Действия за столом пока недоступны в демо-режиме</div>
+      <% if @current_seat %>
+        <div class="turn-banner"><span class="turn-indicator"></span><strong>Место занято</strong><span>Ваш стек за этим столом</span><small><%= @current_seat.stack %> ◈</small></div>
+        <%= button_to "Покинуть стол и вернуть фишки", leave_table_path(@table), method: :delete, class: "button button-quiet button-wide" %>
+        <p class="action-stub-note">Игровые раздачи появятся на следующем этапе.</p>
+      <% elsif logged_in? %>
+        <div class="observer-prompt">
+          <p>Бай-ин за этот стол: <strong><%= @table.buy_in %> фишек</strong>.</p>
+          <div>
+            <% if !@table.active? %>
+              <span>Стол закрыт</span>
+            <% elsif @seats.size >= @table.max_players %>
+              <span>Свободных мест нет</span>
+            <% elsif current_user.chip_balance < @table.buy_in %>
+              <%= link_to "Заработать фишки", earn_chips_path, class: "button button-small" %>
+            <% else %>
+              <%= button_to "Занять место", join_table_path(@table), method: :post, class: "button button-small" %>
+            <% end %>
+          </div>
+        </div>
     <% else %>
       <div class="observer-prompt">
-        <p>Вы смотрите демо-раздачу. Войдите или зарегистрируйтесь, чтобы занять место за столом.</p>
+          <p>Войдите или зарегистрируйтесь, чтобы занять место за столом.</p>
         <div><%= link_to "Войти", login_path, class: "button button-small" %><%= link_to "Регистрация", registration_path, class: "button button-quiet button-small" %></div>
       </div>
     <% end %>
   </section>
 
   <aside class="game-rail">
-    <% if logged_in? %>
-      <section class="rail-panel hand-panel"><div class="panel-heading"><h2>Ваша рука</h2><span class="tag tag-open">Тёрн</span></div><p>Пара королей</p><div class="hand-preview"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span><span class="hand-strength">СИЛЬНАЯ<br>КОМБИНАЦИЯ</span></div><div class="hand-meta"><span>Шанс банка</span><b>18%</b></div></section>
-    <% else %>
-      <section class="rail-panel observer-panel"><h2>Режим просмотра</h2><p>Карты игрока и игровые действия доступны только после входа.</p></section>
-    <% end %>
-    <section class="rail-panel players-panel"><div class="panel-heading"><h2>За столом</h2><span><%= logged_in? ? "5 / 6" : "4 / 6" %></span></div><div class="player-line"><div class="avatar avatar-lilac">М</div><span>Миша_77<small>Дилер</small></span><b>860</b></div><div class="player-line"><div class="avatar avatar-coral">А</div><span>annika<small>Малый блайнд</small></span><b>1 540</b></div><div class="player-line"><div class="avatar avatar-blue">Д</div><span>den_p<small>Большой блайнд</small></span><b>920</b></div><div class="player-line"><div class="avatar avatar-yellow">К</div><span>Костя<small>В игре</small></span><b>2 010</b></div><% if logged_in? %><div class="player-line player-line-you"><div class="avatar avatar-player"><%= current_user.name.first.upcase %></div><span><%= current_user.name %><small>Ваше место</small></span><b>1 240</b></div><% end %></section>
-    <section class="rail-panel history-panel"><div class="panel-heading"><h2>История раздачи</h2><span class="history-live">● В эфире</span></div><p><b>Миша_77</b> повысил до <strong>40</strong></p><p><b>annika</b> уравняла <strong>40</strong></p><p><b>den_p</b> уравнял <strong>40</strong></p></section>
+    <section class="rail-panel players-panel"><div class="panel-heading"><h2>За столом</h2><span><%= @seats.size %> / <%= @table.max_players %></span></div>
+      <% if @seats.any? %>
+        <% @seats.each do |seat| %><div class="player-line <%= "player-line-you" if seat.user_id == current_user&.id %>"><div class="avatar avatar-player"><%= seat.user.name.first.upcase %></div><span><%= seat.user.name %><small><%= seat.user_id == current_user&.id ? "Ваше место" : "Игрок" %></small></span><b><%= seat.stack %></b></div><% end %>
+      <% else %>
+        <p class="empty-players">Пока никто не занял место.</p>
+      <% end %>
+    </section>
+    <section class="rail-panel"><div class="panel-heading"><h2>Условия стола</h2></div><div class="account-detail"><span>Малый блайнд</span><b><%= @table.small_blind %></b></div><div class="account-detail"><span>Большой блайнд</span><b><%= @table.big_blind %></b></div><div class="account-detail"><span>Бай-ин</span><b><%= @table.buy_in %> ◈</b></div></section>
   </aside>
 </div>

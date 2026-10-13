@@ -1,6 +1,10 @@
 require "test_helper"
 
 class AccountSessionsTest < ActionDispatch::IntegrationTest
+  setup do
+    @table = PokerTable.create!(name: "Тестовый стол", small_blind: 10, big_blind: 20, buy_in: 200)
+  end
+
   test "registration creates an account and keeps it logged in after navigation" do
     assert_difference("User.count", 1) do
       post registration_path, params: {
@@ -57,7 +61,7 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
   end
 
   test "guests can view a table without seeing player cards or actions" do
-    get table_path(1)
+    get table_path(@table)
 
     assert_response :success
     assert_select ".poker-table"
@@ -71,28 +75,35 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
     assert_select ".players-panel .player-line-you", false
   end
 
-  test "signed-in users see their demo seat and game controls" do
+  test "signed-in users can see how to join an open table" do
     user = User.create!(name: "Мария", email: "maria@example.com", password: "secure-pass-123")
+    user.credit_chips!(@table.buy_in)
     post login_path, params: { email: user.email, password: "secure-pass-123" }
 
-    get table_path(1)
+    get table_path(@table)
 
     assert_response :success
-    assert_select ".seat-you", /Мария/
-    assert_select ".hole-cards"
-    assert_select ".game-actions"
-    assert_select ".turn-banner"
-    assert_select ".observer-prompt", false
+    assert_select "form[action='#{join_table_path(@table)}']"
+    assert_select ".seat-you", false
+    assert_select ".game-actions", false
   end
 
   test "lobby and core prototype screens render" do
+    DailyChallenge.create!(
+      title: "Разминка перед игрой",
+      prompt: "8 × 7 + 14 = ?",
+      answer: "70",
+      reward_chips: 250,
+      active_on: Date.current
+    )
+
     get root_path
     assert_response :success
     assert_select ".lobby-grid"
     assert_select "title", "Лобби · MathPoker"
     assert_select ".brand span:last-child", "MathPoker"
 
-    get table_path(1)
+    get table_path(@table)
     assert_response :success
     assert_select ".poker-table"
 

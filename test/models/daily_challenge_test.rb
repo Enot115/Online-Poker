@@ -33,4 +33,16 @@ class DailyChallengeTest < ActiveSupport::TestCase
     assert_equal 250, @user.reload.chip_balance
     assert_equal 1, @challenge.challenge_completions.count
   end
+
+  test "creates today's challenge from the latest published challenge after a date change" do
+    @challenge.update!(active_on: Date.yesterday)
+
+    today = DailyChallenge.today
+
+    assert_equal Date.current, today.active_on
+    assert_equal @challenge.title, today.title
+    assert_equal @challenge.prompt, today.prompt
+    assert_equal @challenge.answer, today.answer
+    assert_equal @challenge.reward_chips, today.reward_chips
+  end
 end

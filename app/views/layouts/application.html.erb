@@ -22,7 +22,7 @@
         <div class="header-account">
           <div class="header-balance">
             <span class="balance-chip" aria-hidden="true">◈</span>
-            <span><strong><%= logged_in? ? "2 450" : "—" %></strong><small>фишек</small></span>
+            <span><strong><%= logged_in? ? current_user.chip_balance : "—" %></strong><small>фишек</small></span>
           </div>
           <% if logged_in? %>
             <%= link_to current_user.name, profile_path, class: "account-name" %>

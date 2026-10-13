@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def require_login
+    return if logged_in?
+
+    redirect_to login_path, alert: "Войдите в аккаунт, чтобы продолжить."
+  end
+
   def current_user
     @current_user ||= User.find_by(id: session[:user_id])
   end

@@ -5,17 +5,27 @@
 
 <div class="earn-page-grid">
   <section class="challenge-card">
-    <div class="challenge-card-head"><div><span class="challenge-kicker">ЗАДАЧА ДНЯ</span><h2>Разминка перед игрой</h2></div><span class="difficulty-tag"><i></i> Лёгкая</span></div>
+    <% if @challenge %>
+      <div class="challenge-card-head"><div><span class="challenge-kicker">ЗАДАЧА ДНЯ</span><h2><%= @challenge.title %></h2></div><span class="difficulty-tag"><i></i> Лёгкая</span></div>
     <div class="challenge-progress"><span>Задание 1 из 1</span><div><i></i></div><span>1 мин</span></div>
-    <div class="problem-stage"><span class="problem-label">Найдите значение выражения</span><div class="equation">8 <small>×</small> 7 <small>+</small> 14 <small>=</small> <b>?</b></div><span class="problem-decoration">×</span></div>
-    <form class="answer-form" action="#" method="get" onsubmit="return false">
-      <label for="answer">Ваш ответ</label><input id="answer" type="number" placeholder="Введите число" inputmode="numeric"><button type="submit" class="button">Проверить ответ <span aria-hidden="true">→</span></button>
-    </form>
-    <div class="challenge-reward"><span class="reward-icon" aria-hidden="true">◈</span><span>Награда за верный ответ<small>Зачисляется на игровой баланс</small></span><strong>+250</strong></div>
-    <p class="action-stub-note">Проверка ответов появится в следующем обновлении</p>
+      <div class="problem-stage"><span class="problem-label">Найдите значение выражения</span><div class="equation"><%= @challenge.prompt %></div><span class="problem-decoration">×</span></div>
+      <% if logged_in? && !@challenge_completed %>
+        <%= form_with url: solve_daily_challenge_path, method: :post, class: "answer-form" do %>
+          <%= label_tag :answer, "Ваш ответ" %><%= number_field_tag :answer, nil, required: true, inputmode: "numeric", placeholder: "Введите число" %><button type="submit" class="button">Проверить ответ <span aria-hidden="true">→</span></button>
+        <% end %>
+      <% elsif @challenge_completed %>
+        <p class="challenge-completed">Задача решена. Награда уже зачислена.</p>
+      <% else %>
+        <p class="challenge-sign-in">Чтобы получить награду, <%= link_to "войдите в аккаунт", login_path %>.</p>
+      <% end %>
+      <div class="challenge-reward"><span class="reward-icon" aria-hidden="true">◈</span><span>Награда за верный ответ<small>Зачисляется на игровой баланс</small></span><strong>+<%= @challenge.reward_chips %></strong></div>
+    <% else %>
+      <h2>Задачи на сегодня пока нет</h2>
+      <p>Загляните позже, чтобы пополнить игровой баланс.</p>
+    <% end %>
   </section>
   <aside class="earn-side-column">
-    <section class="balance-panel"><p class="eyebrow">ВАШ БАЛАНС</p><div class="balance-large">2 450 <i>◈</i></div><span>игровых фишек</span><div class="balance-divider"></div><div class="balance-tip"><span>◎</span><p>Фишки нельзя купить. Получайте их за задачи и используйте за покерными столами.</p></div></section>
+    <section class="balance-panel"><p class="eyebrow">ВАШ БАЛАНС</p><div class="balance-large"><%= logged_in? ? current_user.chip_balance : "—" %> <i>◈</i></div><span>игровых фишек</span><div class="balance-divider"></div><div class="balance-tip"><span>◎</span><p>Фишки нельзя купить. Получайте их за задачи и используйте за покерными столами.</p></div></section>
     <section class="streak-panel"><div class="panel-heading"><h2>Серия задач</h2><span>Эта неделя</span></div><div class="week-days"><div class="day-done"><i>✓</i><span>ПН</span></div><div class="day-done"><i>✓</i><span>ВТ</span></div><div class="day-done"><i>✓</i><span>СР</span></div><div class="day-current"><i>•</i><span>ЧТ</span></div><div><i>·</i><span>ПТ</span></div><div><i>·</i><span>СБ</span></div><div><i>·</i><span>ВС</span></div></div><p>Решайте задачи каждый день, чтобы не прерывать серию.</p></section>
   </aside>
 </div>
