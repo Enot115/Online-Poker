@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980" role="img" aria-labelledby="title description">
+  <title id="title">Архитектура базы данных MathPoker</title>
+  <desc id="description">ER-диаграмма таблиц пользователей, покерных столов, мест за столами, ежедневных задач и их выполнений.</desc>
+  <defs>
+    <style>
+      text { font-family: Arial, "DejaVu Sans", sans-serif; fill: #172033; }
+      .heading { font-size: 32px; font-weight: 700; }
+      .subtitle { font-size: 16px; fill: #526078; }
+      .table { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .header { fill: #e8efff; }
+      .header-green { fill: #e4f7ee; }
+      .header-gold { fill: #fff3d6; }
+      .table-name { font-size: 20px; font-weight: 700; }
+      .field { font-size: 16px; }
+      .relation { fill: none; stroke: #687993; stroke-width: 3; }
+      .relation-label { font-size: 15px; font-weight: 700; fill: #526078; }
+      .legend { font-size: 14px; fill: #526078; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#687993"/>
+    </marker>
+  </defs>
+
+  <rect width="1500" height="980" fill="#f7f9fc"/>
+  <text x="70" y="62" class="heading">Архитектура базы данных MathPoker</text>
+  <text x="70" y="92" class="subtitle">Связи между аккаунтами, покерными столами и ежедневными задачами</text>
+
+  <g class="relation">
+    <path d="M430 260 H500 V400 H570" marker-end="url(#arrow)"/>
+    <path d="M1070 260 H1000 V400 H910" marker-end="url(#arrow)"/>
+    <path d="M250 430 V790 H570" marker-end="url(#arrow)"/>
+    <path d="M1070 750 H910" marker-end="url(#arrow)"/>
+  </g>
+  <text x="462" y="244" class="relation-label">1 : N</text>
+  <text x="962" y="244" class="relation-label">1 : N</text>
+  <text x="270" y="770" class="relation-label">1 : N</text>
+  <text x="950" y="732" class="relation-label">1 : N</text>
+
+  <g>
+    <rect x="70" y="140" width="360" height="290" rx="12" class="table"/>
+    <path d="M82 140 H418 Q430 140 430 152 V198 H70 V152 Q70 140 82 140" class="header"/>
+    <text x="94" y="178" class="table-name">users</text>
+    <text x="94" y="230" class="field">PK  id</text>
+    <text x="94" y="260" class="field">name, email (уникальный)</text>
+    <text x="94" y="290" class="field">password_digest (BCrypt)</text>
+    <text x="94" y="320" class="field">chip_balance ≥ 0</text>
+    <text x="94" y="350" class="field">created_at, updated_at</text>
+  </g>
+
+  <g>
+    <rect x="1070" y="140" width="360" height="290" rx="12" class="table"/>
+    <path d="M1082 140 H1418 Q1430 140 1430 152 V198 H1070 V152 Q1070 140 1082 140" class="header"/>
+    <text x="1094" y="178" class="table-name">poker_tables</text>
+    <text x="1094" y="230" class="field">PK  id</text>
+    <text x="1094" y="260" class="field">name, active</text>
+    <text x="1094" y="290" class="field">small_blind, big_blind</text>
+    <text x="1094" y="320" class="field">buy_in, max_players</text>
+    <text x="1094" y="350" class="field">created_at, updated_at</text>
+  </g>
+
+  <g>
+    <rect x="570" y="300" width="340" height="300" rx="12" class="table"/>
+    <path d="M582 300 H898 Q910 300 910 312 V358 H570 V312 Q570 300 582 300" class="header-green"/>
+    <text x="594" y="338" class="table-name">table_seats</text>
+    <text x="594" y="390" class="field">PK  id</text>
+    <text x="594" y="420" class="field">FK  poker_table_id</text>
+    <text x="594" y="450" class="field">FK  user_id</text>
+    <text x="594" y="480" class="field">stack ≥ 0</text>
+    <text x="594" y="510" class="field">left_at (NULL = активно)</text>
+    <text x="594" y="540" class="field">created_at, updated_at</text>
+    <text x="594" y="575" class="legend">История мест игрока за столами</text>
+  </g>
+
+  <g>
+    <rect x="1070" y="620" width="360" height="270" rx="12" class="table"/>
+    <path d="M1082 620 H1418 Q1430 620 1430 632 V678 H1070 V632 Q1070 620 1082 620" class="header-gold"/>
+    <text x="1094" y="658" class="table-name">daily_challenges</text>
+    <text x="1094" y="710" class="field">PK  id</text>
+    <text x="1094" y="740" class="field">title, prompt, answer</text>
+    <text x="1094" y="770" class="field">reward_chips &gt; 0</text>
+    <text x="1094" y="800" class="field">active_on (уникальная дата)</text>
+    <text x="1094" y="830" class="field">created_at, updated_at</text>
+  </g>
+
+  <g>
+    <rect x="570" y="670" width="340" height="250" rx="12" class="table"/>
+    <path d="M582 670 H898 Q910 670 910 682 V728 H570 V682 Q570 670 582 670" class="header-green"/>
+    <text x="594" y="708" class="table-name">challenge_completions</text>
+    <text x="594" y="760" class="field">PK  id</text>
+    <text x="594" y="790" class="field">FK  daily_challenge_id</text>
+    <text x="594" y="820" class="field">FK  user_id</text>
+    <text x="594" y="850" class="field">reward_chips &gt; 0</text>
+    <text x="594" y="880" class="legend">Уникальная пара: задача + игрок</text>
+  </g>
+
+  <text x="70" y="950" class="legend">PK — первичный ключ · FK — внешний ключ · 1 : N — один ко многим</text>
+</svg>
