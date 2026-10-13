@@ -89,8 +89,8 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     assert_select ".lobby-grid"
-    assert_select "title", "Лобби · PokerMath"
-    assert_select ".brand span:last-child", "PokerMath"
+    assert_select "title", "Лобби · MathPoker"
+    assert_select ".brand span:last-child", "MathPoker"
 
     get table_path(1)
     assert_response :success
