@@ -56,10 +56,41 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
     assert_select ".flash-alert", "Неверный email или пароль."
   end
 
+  test "guests can view a table without seeing player cards or actions" do
+    get table_path(1)
+
+    assert_response :success
+    assert_select ".poker-table"
+    assert_select ".observer-prompt"
+    assert_select ".observer-prompt a[href='#{login_path}']", "Войти"
+    assert_select ".observer-prompt a[href='#{registration_path}']", "Регистрация"
+    assert_select ".seat-you", false
+    assert_select ".hole-cards", false
+    assert_select ".game-actions", false
+    assert_select ".turn-banner", false
+    assert_select ".players-panel .player-line-you", false
+  end
+
+  test "signed-in users see their demo seat and game controls" do
+    user = User.create!(name: "Мария", email: "maria@example.com", password: "secure-pass-123")
+    post login_path, params: { email: user.email, password: "secure-pass-123" }
+
+    get table_path(1)
+
+    assert_response :success
+    assert_select ".seat-you", /Мария/
+    assert_select ".hole-cards"
+    assert_select ".game-actions"
+    assert_select ".turn-banner"
+    assert_select ".observer-prompt", false
+  end
+
   test "lobby and core prototype screens render" do
     get root_path
     assert_response :success
     assert_select ".lobby-grid"
+    assert_select "title", "Лобби · PokerMath"
+    assert_select ".brand span:last-child", "PokerMath"
 
     get table_path(1)
     assert_response :success

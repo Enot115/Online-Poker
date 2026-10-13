@@ -6,7 +6,7 @@
 </div>
 <section class="table-page-heading">
   <div><p class="eyebrow">ХОЛДЕМ · БЕЗ ЛИМИТА</p><h1>Тёплый стол <span class="table-id">№ <%= params[:id] %></span></h1></div>
-  <div class="table-page-stats"><span>Блайнды<strong>10 / 20</strong></span><span>Игроки<strong>5 из 6</strong></span><span>Ваш стек<strong>1 240 <i>◈</i></strong></span></div>
+  <div class="table-page-stats"><span>Блайнды<strong>10 / 20</strong></span><span>Игроки<strong><%= logged_in? ? "5 из 6" : "4 из 6" %></strong></span><span><%= logged_in? ? "Ваш стек" : "Режим" %><strong><%= logged_in? ? "1 240 ◈" : "Просмотр" %></strong></span></div>
 </section>
 
 <div class="game-layout">
@@ -20,18 +20,31 @@
         <div class="table-seat seat-left"><div class="avatar avatar-coral">А</div><span>annika</span><b>1 540 <i>◈</i></b></div>
         <div class="table-seat seat-right"><div class="avatar avatar-blue">Д</div><span>den_p</span><b>920 <i>◈</i></b></div>
         <div class="table-seat seat-bottom-left"><div class="avatar avatar-yellow">К</div><span>Костя</span><b>2 010 <i>◈</i></b></div>
-        <div class="table-seat seat-you"><div class="avatar avatar-player"><%= logged_in? ? current_user.name.first.upcase : "В" %></div><span><%= logged_in? ? current_user.name : "Вы" %> <em>ВЫ</em></span><b>1 240 <i>◈</i></b><div class="hole-cards"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span></div></div>
+        <% if logged_in? %>
+          <div class="table-seat seat-you"><div class="avatar avatar-player"><%= current_user.name.first.upcase %></div><span><%= current_user.name %> <em>ВЫ</em></span><b>1 240 <i>◈</i></b><div class="hole-cards"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span></div></div>
+        <% end %>
         <span class="dealer-chip">D</span>
       </div>
     </div>
-    <div class="turn-banner"><span class="turn-indicator"></span><strong>Ваш ход</strong><span>До вас: Миша поставил 40 фишек</span><small>00:18</small></div>
-    <div class="game-actions"><button type="button" class="button button-action-fold">Сбросить</button><button type="button" class="button button-action-check">Чек</button><button type="button" class="button">Уравнять <span>40 ◈</span></button><button type="button" class="raise-button">Повысить <span>⌃</span></button></div>
-    <div class="action-stub-note">Действия за столом пока недоступны в демо-режиме</div>
+    <% if logged_in? %>
+      <div class="turn-banner"><span class="turn-indicator"></span><strong>Ваш ход</strong><span>До вас: Миша поставил 40 фишек</span><small>00:18</small></div>
+      <div class="game-actions"><button type="button" class="button button-action-fold">Сбросить</button><button type="button" class="button button-action-check">Чек</button><button type="button" class="button">Уравнять <span>40 ◈</span></button><button type="button" class="raise-button">Повысить <span>⌃</span></button></div>
+      <div class="action-stub-note">Действия за столом пока недоступны в демо-режиме</div>
+    <% else %>
+      <div class="observer-prompt">
+        <p>Вы смотрите демо-раздачу. Войдите или зарегистрируйтесь, чтобы занять место за столом.</p>
+        <div><%= link_to "Войти", login_path, class: "button button-small" %><%= link_to "Регистрация", registration_path, class: "button button-quiet button-small" %></div>
+      </div>
+    <% end %>
   </section>
 
   <aside class="game-rail">
-    <section class="rail-panel hand-panel"><div class="panel-heading"><h2>Ваша рука</h2><span class="tag tag-open">Тёрн</span></div><p>Пара королей</p><div class="hand-preview"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span><span class="hand-strength">СИЛЬНАЯ<br>КОМБИНАЦИЯ</span></div><div class="hand-meta"><span>Шанс банка</span><b>18%</b></div></section>
-    <section class="rail-panel players-panel"><div class="panel-heading"><h2>За столом</h2><span>5 / 6</span></div><div class="player-line"><div class="avatar avatar-lilac">М</div><span>Миша_77<small>Дилер</small></span><b>860</b></div><div class="player-line"><div class="avatar avatar-coral">А</div><span>annika<small>Малый блайнд</small></span><b>1 540</b></div><div class="player-line"><div class="avatar avatar-blue">Д</div><span>den_p<small>Большой блайнд</small></span><b>920</b></div><div class="player-line"><div class="avatar avatar-yellow">К</div><span>Костя<small>В игре</small></span><b>2 010</b></div><div class="player-line player-line-you"><div class="avatar avatar-player"><%= logged_in? ? current_user.name.first.upcase : "В" %></div><span><%= logged_in? ? current_user.name : "Вы" %><small>Ваше место</small></span><b>1 240</b></div></section>
+    <% if logged_in? %>
+      <section class="rail-panel hand-panel"><div class="panel-heading"><h2>Ваша рука</h2><span class="tag tag-open">Тёрн</span></div><p>Пара королей</p><div class="hand-preview"><span class="playing-card">K<small>♠</small></span><span class="playing-card card-red">Q<small>♠</small></span><span class="hand-strength">СИЛЬНАЯ<br>КОМБИНАЦИЯ</span></div><div class="hand-meta"><span>Шанс банка</span><b>18%</b></div></section>
+    <% else %>
+      <section class="rail-panel observer-panel"><h2>Режим просмотра</h2><p>Карты игрока и игровые действия доступны только после входа.</p></section>
+    <% end %>
+    <section class="rail-panel players-panel"><div class="panel-heading"><h2>За столом</h2><span><%= logged_in? ? "5 / 6" : "4 / 6" %></span></div><div class="player-line"><div class="avatar avatar-lilac">М</div><span>Миша_77<small>Дилер</small></span><b>860</b></div><div class="player-line"><div class="avatar avatar-coral">А</div><span>annika<small>Малый блайнд</small></span><b>1 540</b></div><div class="player-line"><div class="avatar avatar-blue">Д</div><span>den_p<small>Большой блайнд</small></span><b>920</b></div><div class="player-line"><div class="avatar avatar-yellow">К</div><span>Костя<small>В игре</small></span><b>2 010</b></div><% if logged_in? %><div class="player-line player-line-you"><div class="avatar avatar-player"><%= current_user.name.first.upcase %></div><span><%= current_user.name %><small>Ваше место</small></span><b>1 240</b></div><% end %></section>
     <section class="rail-panel history-panel"><div class="panel-heading"><h2>История раздачи</h2><span class="history-live">● В эфире</span></div><p><b>Миша_77</b> повысил до <strong>40</strong></p><p><b>annika</b> уравняла <strong>40</strong></p><p><b>den_p</b> уравнял <strong>40</strong></p></section>
   </aside>
 </div>

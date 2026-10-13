@@ -239,6 +239,11 @@ h1 span { color: var(--green); }
 .raise-button { display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #d5e0d0; border-radius: 4px; background: #fff; color: #355b42; font: 700 11px "DM Sans", sans-serif; }
 .raise-button span { color: var(--green); font-size: 17px; }
 .action-stub-note { margin: 9px 0 0; color: #8b948d; font-size: 9px; text-align: center; }
+.observer-prompt { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+.observer-prompt p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.observer-prompt > div { display: flex; flex: 0 0 auto; gap: 8px; }
+.observer-panel h2 { margin: 0 0 8px; font: 700 13px "Manrope", sans-serif; }
+.observer-panel p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
 .game-rail { display: grid; gap: 10px; }
 .rail-panel { padding: 14px; }
 .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -418,6 +423,7 @@ h1 span { color: var(--green); }
   .table-page-heading h1 { font-size: 26px; }
   .table-page-stats { width: 100%; justify-content: space-between; gap: 12px; }
   .game-layout { grid-template-columns: 1fr; }
+  .observer-prompt { align-items: flex-start; flex-direction: column; }
   .poker-table-wrap { padding: 42px 28px 38px; }
   .poker-table { min-height: 340px; aspect-ratio: 1.35; border-width: 9px; }
   .table-seat { min-width: 78px; padding: 5px 6px; font-size: 8px; }
