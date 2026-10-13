@@ -762,43 +762,44 @@ h1 span { color: var(--green); }
   .activity-row > b { font-size: 9px; }
 }
 
-/* Premium club treatment for the lobby */
-.lobby-shell {
+/* Shared premium club treatment */
+.club-shell {
   background-color: #101d17;
   background-image:
     linear-gradient(135deg, rgba(255,255,255,0.018) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.018) 50%, rgba(255,255,255,0.018) 75%, transparent 75%);
   background-size: 8px 8px;
 }
-.lobby-shell .app-header {
+.club-shell .page-shell::before { background: none; }
+.club-shell .app-header {
   border-bottom-color: rgba(218, 187, 119, 0.2);
   background: rgba(15, 29, 23, 0.96);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
-.lobby-shell .brand { color: #f3eddb; }
-.lobby-shell .brand-mark {
+.club-shell .brand { color: #f3eddb; }
+.club-shell .brand-mark {
   border: 1px solid rgba(220, 190, 123, 0.55);
   background: linear-gradient(145deg, #315b42, #183629);
   color: #e9cf8b;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
 }
-.lobby-shell .nav-item { color: #aab5a9; }
-.lobby-shell .nav-item:hover, .lobby-shell .nav-item.is-active { color: #f0d28b; }
-.lobby-shell .nav-item.is-active::after { background: #d8b86e; }
-.lobby-shell .header-balance { border-right-color: rgba(218, 187, 119, 0.22); }
-.lobby-shell .balance-chip {
+.club-shell .nav-item { color: #aab5a9; }
+.club-shell .nav-item:hover, .club-shell .nav-item.is-active { color: #f0d28b; }
+.club-shell .nav-item.is-active::after { background: #d8b86e; }
+.club-shell .header-balance { border-right-color: rgba(218, 187, 119, 0.22); }
+.club-shell .balance-chip {
   background: linear-gradient(145deg, #f0d890, #b28d45);
   color: #263326;
   box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);
 }
-.lobby-shell .header-balance strong, .lobby-shell .account-name { color: #f3eddb; }
-.lobby-shell .header-balance small { color: #aab5a9; }
-.lobby-shell .header-account > .nav-link { color: #e5d6ae; }
-.lobby-shell .header-account > .button {
+.club-shell .header-balance strong, .club-shell .account-name { color: #f3eddb; }
+.club-shell .header-balance small { color: #aab5a9; }
+.club-shell .header-account > .nav-link { color: #e5d6ae; }
+.club-shell .header-account > .button {
   background: linear-gradient(135deg, #d6b76d, #b18b45);
   color: #1b281e;
   box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
-.lobby-shell .header-account > form .button-quiet {
+.club-shell .header-account > form .button-quiet {
   border-color: rgba(230, 216, 180, 0.28);
   background: transparent;
   color: #e5d6ae;
@@ -862,3 +863,141 @@ h1 span { color: var(--green); }
   box-shadow: 0 12px 25px rgba(0,0,0,0.18);
 }
 .lobby-shell .flash { border: 1px solid rgba(218, 187, 119, 0.25); }
+
+.club-shell { color: #f3eddb; }
+.club-shell .eyebrow { color: #c4a45c; }
+.club-shell .screen-lead, .club-shell .lead { color: #b4beb2; }
+.club-shell .back-link { color: #d0c5a5; }
+.club-shell .back-link:hover { color: #f0d28b; }
+.club-shell .prototype-label { color: #b7b5a9; }
+.club-shell .prototype-label > span { background: #d6b76d; }
+.club-shell .button:not(.button-quiet):not(.button-outline):not(.button-light):not(.button-action-fold):not(.button-action-check) {
+  background: linear-gradient(135deg, #d6b76d, #b18b45);
+  color: #1b281e;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.16);
+}
+.club-shell .button:not(.button-quiet):not(.button-outline):not(.button-light):not(.button-action-fold):not(.button-action-check):hover {
+  filter: brightness(1.07);
+}
+.club-shell .auth-intro h1, .club-shell .earn-page-heading h1,
+.club-shell .table-page-heading h1, .club-shell .profile-identity h1 { color: #f3eddb; }
+.club-shell .auth-intro h1 span, .club-shell .earn-page-heading h1 span { color: #e0c27b; }
+.club-shell .auth-form-wrap, .club-shell .challenge-card,
+.club-shell .stat-card, .club-shell .profile-section,
+.club-shell .account-panel, .club-shell .streak-panel,
+.club-shell .rail-panel {
+  border-color: rgba(226, 208, 164, 0.32);
+  background: linear-gradient(145deg, #f6f2e7, #ebe5d5);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.72);
+  color: #26372b;
+}
+.club-shell .auth-form-wrap h2, .club-shell .challenge-card-head h2,
+.club-shell .panel-heading h2, .club-shell .profile-section h2 { color: #26372b; }
+.club-shell .form-note, .club-shell .form-footer { color: #647067; }
+.club-shell .form-footer a, .club-shell .profile-link,
+.club-shell .text-link { color: #386247; }
+.club-shell .field label, .club-shell .answer-form label { color: #334638; }
+.club-shell .field input, .club-shell .answer-form input {
+  border-color: #c6bfa9;
+  background: #fffdf8;
+  color: #26372b;
+}
+.club-shell .field input:focus, .club-shell .answer-form input:focus {
+  outline-color: #c7a75b;
+  border-color: #9e813e;
+}
+.club-shell .auth-form-wrap .button-wide { width: 100%; }
+.club-shell .form-errors { border-left-color: #bd725c; }
+.club-shell .screen-topline { border-color: rgba(218, 187, 119, 0.18); }
+
+.club-shell .challenge-progress { color: #69736a; }
+.club-shell .challenge-progress div { background: #ddd6c3; }
+.club-shell .challenge-progress div i { background: #c4a45c; }
+.club-shell .problem-stage {
+  border-color: rgba(214, 183, 109, 0.45);
+  background: radial-gradient(ellipse at 50% 20%, #315b42, #19382b);
+}
+.club-shell .problem-label { color: #d5ddc9; }
+.club-shell .equation { color: #f3eddb; }
+.club-shell .equation small, .club-shell .equation b { color: #e0c27b; }
+.club-shell .problem-decoration { color: rgba(224, 194, 123, 0.16); }
+.club-shell .challenge-reward {
+  border-color: #ded5bd;
+  background: #eee8d8;
+}
+.club-shell .challenge-reward > span:nth-child(2) { color: #3f5142; }
+.club-shell .challenge-reward small { color: #737c70; }
+.club-shell .challenge-reward strong { color: #49653e; }
+.club-shell .action-stub-note { color: #b4beb2; }
+.club-shell .balance-panel {
+  border: 1px solid rgba(218, 187, 119, 0.38);
+  border-radius: 14px;
+  background: linear-gradient(145deg, #28543c, #173729 78%);
+  color: #f3eddb;
+}
+.club-shell .balance-panel .eyebrow { color: #e0c27b; }
+.club-shell .balance-panel > span, .club-shell .balance-tip p { color: #d0d8cb; }
+.club-shell .balance-divider { background: rgba(230, 216, 180, 0.22); }
+.club-shell .balance-tip > span { color: #e0c27b; }
+
+.club-shell .profile-hero { border-bottom-color: rgba(218, 187, 119, 0.24); }
+.club-shell .profile-avatar { border-color: #c4a45c; background: #294d38; color: #f0d28b; }
+.club-shell .profile-avatar span { border-color: #101d17; }
+.club-shell .profile-email, .club-shell .level-block > span { color: #b4beb2; }
+.club-shell .level-label { color: #d0d8cb; }
+.club-shell .level-label strong { color: #f3eddb; }
+.club-shell .level-label small { color: #b4beb2; }
+.club-shell .level-track { background: rgba(255,255,255,0.16); }
+.club-shell .level-track i { background: #d6b76d; }
+.club-shell .profile-tabs { border-bottom-color: rgba(218, 187, 119, 0.24); }
+.club-shell .profile-tabs a { color: #b4beb2; }
+.club-shell .profile-tabs a:hover, .club-shell .profile-tabs a.is-active { color: #f0d28b; }
+.club-shell .profile-tabs a.is-active::after { background: #d6b76d; }
+.club-shell .stat-card { border-radius: 14px; }
+.club-shell .stat-card strong { color: #26372b; }
+.club-shell .stat-card > span:nth-child(2), .club-shell .stat-card small { color: #6b756b; }
+.club-shell .profile-section { border-radius: 14px; }
+.club-shell .activity-row { border-top-color: #ddd7c5; }
+.club-shell .activity-row strong { color: #344638; }
+.club-shell .activity-row small { color: #737c70; }
+.club-shell .account-detail { border-top-color: #ddd7c5; }
+.club-shell .account-detail span { color: #737c70; }
+.club-shell .account-detail b { color: #344638; }
+.club-shell .profile-balance {
+  border: 1px solid rgba(218, 187, 119, 0.38);
+  border-radius: 14px;
+  background: linear-gradient(145deg, #28543c, #173729 78%);
+}
+.club-shell .profile-balance .eyebrow { color: #e0c27b; }
+
+.club-shell .table-page-heading .eyebrow { color: #c4a45c; }
+.club-shell .table-id { color: #adae9f; }
+.club-shell .table-page-stats span { color: #b4beb2; }
+.club-shell .table-page-stats strong { color: #f3eddb; }
+.club-shell .poker-table-wrap {
+  border-color: rgba(218, 187, 119, 0.28);
+  background: linear-gradient(145deg, #1d392b, #13291f);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 36px rgba(0,0,0,0.2);
+}
+.club-shell .poker-table { border-color: #927a45; }
+.club-shell .turn-banner, .club-shell .observer-prompt {
+  border-color: rgba(218, 187, 119, 0.32);
+  background: #f1ecde;
+  color: #536253;
+}
+.club-shell .turn-banner strong { color: #315b42; }
+.club-shell .turn-banner small { color: #8b7136; }
+.club-shell .observer-prompt p { color: #536253; }
+.club-shell .observer-prompt .button-quiet { color: #35543c; }
+.club-shell .game-actions .button-action-fold { background: #f6e9e2; color: #994c3e; }
+.club-shell .game-actions .button-action-check { background: #eaf0e5; color: #3e704d; }
+.club-shell .raise-button { border-color: #c5b995; background: #f6f2e7; color: #35543c; }
+.club-shell .raise-button:hover { background: #eee4ca; }
+.club-shell .game-rail .rail-panel { border-radius: 14px; }
+.club-shell .hand-panel > p, .club-shell .player-line > span { color: #405044; }
+.club-shell .player-line { border-top-color: #ddd7c5; }
+.club-shell .player-line-you { background: #e7ecdc; }
+.club-shell .history-panel > p { color: #737c70; }
+.club-shell .history-panel > p b, .club-shell .history-panel > p strong { color: #344638; }
+.club-shell .flash-notice { background: #e5eedf; color: #315b42; }
+.club-shell .flash-alert { background: #f6e9e2; color: #873e30; }

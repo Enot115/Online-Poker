@@ -7,7 +7,7 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
-  <body class="<%= "lobby-shell" if controller_name == "home" %>">
+  <body class="club-shell <%= "lobby-shell" if controller_name == "home" %>">
     <header class="app-header">
       <div class="header-inner">
         <%= link_to root_path, class: "brand" do %>
