@@ -53,6 +53,18 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
     assert_select ".status-line", "Вы не вошли в аккаунт"
   end
 
+  test "login cookie expires with the browser session" do
+    user = User.create!(name: "Мария", email: "maria@example.com", password: "secure-pass-123")
+
+    post login_path, params: { email: user.email, password: "secure-pass-123" }
+
+    session_cookie = response.headers["Set-Cookie"].to_s.lines.find do |cookie|
+      cookie.start_with?("_online_poker_session=")
+    end
+    assert session_cookie, "expected the session cookie to be set"
+    assert_no_match(/(?:expires|max-age)=/i, session_cookie)
+  end
+
   test "invalid credentials do not create an authenticated session" do
     post login_path, params: { email: "nobody@example.com", password: "wrong-password" }
 
