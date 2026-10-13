@@ -1,0 +1,17 @@
+ru:
+  activerecord:
+    attributes:
+      user:
+        email: "Email"
+        name: "Имя"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "не может быть пустым"
+      confirmation: "не совпадает с подтверждением"
+      invalid: "имеет неверный формат"
+      taken: "уже используется"
+      too_long: "слишком длинное (максимум %{count} символов)"
+      too_short: "слишком короткий (минимум %{count} символов)"

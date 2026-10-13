@@ -19,6 +19,22 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
     assert_select ".status-line", "Вы авторизованы"
   end
 
+  test "registration displays a validation error for an invalid email" do
+    assert_no_difference("User.count") do
+      post registration_path, params: {
+        user: {
+          name: "Алексей",
+          email: "not-an-email",
+          password: "secure-pass-123",
+          password_confirmation: "secure-pass-123"
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select ".form-errors", "Email имеет неверный формат"
+  end
+
   test "login persists through refresh and logout ends the session" do
     user = User.create!(name: "Мария", email: "maria@example.com", password: "secure-pass-123")
 
