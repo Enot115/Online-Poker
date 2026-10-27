@@ -7,5 +7,6 @@ class HomeController < ApplicationController
     @challenge_completed = @challenge.present? && logged_in? &&
       @challenge.challenge_completions.exists?(user: current_user)
     @table_visit_count = logged_in? ? current_user.table_seats.count : 0
+    @leaderboard = User.order(chip_balance: :desc, id: :asc).limit(10)
   end
 end

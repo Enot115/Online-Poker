@@ -1,0 +1,18 @@
+<%= turbo_frame_tag "leaderboard" do %>
+  <section class="leaderboard-panel" aria-labelledby="leaderboard-title" aria-live="polite">
+    <div class="panel-heading"><h2 id="leaderboard-title">Лидеры по фишкам</h2><span>онлайн</span></div>
+    <% if users.any? %>
+      <ol class="leaderboard-list">
+        <% users.each_with_index do |user, index| %>
+          <li class="leaderboard-entry">
+            <span class="leaderboard-rank"><%= index + 1 %></span>
+            <span class="leaderboard-name"><%= user.name %></span>
+            <strong><%= number_with_delimiter(user.chip_balance, delimiter: " ") %> <i>◈</i></strong>
+          </li>
+        <% end %>
+      </ol>
+    <% else %>
+      <p class="leaderboard-empty">Пока нет игроков.</p>
+    <% end %>
+  </section>
+<% end %>

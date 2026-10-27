@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root "home#show"
+  mount ActionCable.server => "/cable"
 
   get "/registration", to: "users#new", as: :registration
   post "/registration", to: "users#create"

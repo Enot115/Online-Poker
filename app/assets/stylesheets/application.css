@@ -365,6 +365,24 @@ h1 span { color: var(--green); }
   background: rgba(255,255,255,0.8);
   box-shadow: 0 16px 24px rgba(18, 41, 30, 0.04);
 }
+.leaderboard-panel {
+  padding: 17px;
+  border: 1px solid rgba(20, 52, 40, 0.08);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 16px 24px rgba(18, 41, 30, 0.04);
+}
+.leaderboard-panel .panel-heading { margin-bottom: 10px; }
+.leaderboard-panel .panel-heading h2 { font: 700 13px "Manrope", sans-serif; }
+.leaderboard-panel .panel-heading > span { color: #438660; font-size: 10px; }
+.leaderboard-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.leaderboard-entry { display: flex; min-width: 0; align-items: center; gap: 9px; padding: 9px 0; border-top: 1px solid #edf0eb; }
+.leaderboard-rank { display: grid; width: 23px; height: 23px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: #e9eee2; color: #55684f; font: 700 10px "Manrope", sans-serif; }
+.leaderboard-entry:first-child .leaderboard-rank { background: #f1e7c7; color: #896e2f; }
+.leaderboard-name { min-width: 0; overflow: hidden; color: #39463d; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.leaderboard-entry strong { margin-left: auto; color: #34443a; font: 700 11px "Manrope", sans-serif; white-space: nowrap; }
+.leaderboard-entry strong i { color: #bc9d3c; font-size: 10px; font-style: normal; }
+.leaderboard-empty { margin: 0; color: var(--muted); font-size: 11px; }
 .quick-profile-head { display: flex; align-items: center; gap: 11px; }
 .avatar { position: relative; flex: 0 0 auto; display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; font: 700 12px "Manrope", sans-serif; }
 .avatar-green { background: #e5efe1; color: #2c6848; }
@@ -872,6 +890,11 @@ h1 span { color: var(--green); }
   box-shadow: 0 18px 34px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 .lobby-shell .quick-profile {
+  border-color: rgba(226, 208, 164, 0.3);
+  background: linear-gradient(145deg, #f6f2e7, #ebe5d5);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+}
+.lobby-shell .leaderboard-panel {
   border-color: rgba(226, 208, 164, 0.3);
   background: linear-gradient(145deg, #f6f2e7, #ebe5d5);
   box-shadow: 0 12px 25px rgba(0,0,0,0.18);

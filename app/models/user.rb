@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :completed_challenges, through: :challenge_completions, source: :daily_challenge
 
   before_validation :normalize_email
+  after_update_commit :broadcast_leaderboard
 
   validates :name, presence: true, length: { maximum: 60 }
   validates :email, presence: true, uniqueness: { case_sensitive: false },
@@ -44,5 +45,16 @@ class User < ApplicationRecord
 
   def normalize_email
     self.email = email.to_s.strip.downcase
+  end
+
+  def broadcast_leaderboard
+    return unless previous_changes.key?("chip_balance")
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "leaderboard",
+      target: "leaderboard",
+      partial: "leaderboards/leaderboard",
+      locals: { users: User.order(chip_balance: :desc, id: :asc).limit(10) }
+    )
   end
 end

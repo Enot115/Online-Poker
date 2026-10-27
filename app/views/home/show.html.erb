@@ -54,5 +54,7 @@
       <div class="quick-stats"><div><strong><%= @table_visit_count %></strong><span>Посещений столов</span></div><div><strong><%= logged_in? ? current_user.chip_balance : "—" %></strong><span>Фишек</span></div></div>
       <%= link_to "Открыть профиль", profile_path, class: "profile-link" %>
     </section>
+    <%= turbo_stream_from "leaderboard" %>
+    <%= render "leaderboards/leaderboard", users: @leaderboard %>
   </aside>
 </div>

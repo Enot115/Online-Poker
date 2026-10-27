@@ -101,6 +101,8 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
   end
 
   test "lobby and core prototype screens render" do
+    leader = User.create!(name: "Лидер", email: "leader@example.com", password: "secure-pass-123")
+    leader.credit_chips!(1_250)
     DailyChallenge.create!(
       title: "Разминка перед игрой",
       prompt: '\int_0^1\left(4x^3+2x\right)\,dx',
@@ -113,6 +115,9 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     assert_select ".lobby-grid"
+    assert_select "turbo-cable-stream-source[channel='Turbo::StreamsChannel']"
+    assert_select "turbo-frame#leaderboard .leaderboard-entry", text: /Лидер/
+    assert Rails.application.routes.routes.any? { |route| route.path.spec.to_s == "/cable" }
     assert_select "title", "Лобби · MathPoker"
     assert_select ".brand span:last-child", "MathPoker"
 
