@@ -1,68 +1,9 @@
-<% content_for :title, "Игровой стол" %>
+<% content_for :title, @table.name %>
 
-<div class="screen-topline">
-  <%= link_to "← Лобби", root_path, class: "back-link" %>
-  <span class="prototype-label"><span></span> ИГРОВОЙ СТОЛ</span>
-</div>
+<div class="screen-topline"><%= link_to "← Лобби", root_path, class: "back-link" %><span class="prototype-label"><span></span> TEXAS HOLD’EM</span></div>
 <section class="table-page-heading">
-  <div><p class="eyebrow">ХОЛДЕМ · БЕЗ ЛИМИТА</p><h1><%= @table.name %> <span class="table-id">№ <%= @table.id %></span></h1></div>
+  <div><p class="eyebrow">БЕЗ ЛИМИТА</p><h1><%= @table.name %> <span class="table-id">№ <%= @table.id %></span></h1></div>
   <div class="table-page-stats"><span>Блайнды<strong><%= @table.small_blind %> / <%= @table.big_blind %></strong></span><span>Игроки<strong><%= @seats.size %> из <%= @table.max_players %></strong></span><span><%= @current_seat ? "Ваш стек" : "Бай-ин" %><strong><%= @current_seat ? @current_seat.stack : @table.buy_in %> ◈</strong></span></div>
 </section>
-
-<div class="game-layout">
-  <section class="game-column" aria-label="Игровой стол">
-    <div class="poker-table-wrap">
-      <div class="poker-table">
-        <div class="table-center-mark">♠ <span>POKER ROOM</span></div>
-          <div class="table-status"><strong><%= @table.active? ? "СТОЛ ОТКРЫТ" : "СТОЛ ЗАКРЫТ" %></strong><span><%= @seats.empty? ? "Ожидает игроков" : "Места заняты: #{@seats.size}" %></span></div>
-          <% other_positions = %w[seat-top seat-left seat-right seat-bottom-left seat-bottom-right] %>
-          <% other_seat_index = 0 %>
-          <% @seats.each do |seat| %>
-            <% if seat.user_id == current_user&.id %>
-              <% seat_position = "seat-you" %>
-            <% else %>
-              <% seat_position = other_positions[other_seat_index % other_positions.length] %>
-              <% other_seat_index += 1 %>
-            <% end %>
-            <div class="table-seat <%= seat_position %>"><div class="avatar avatar-player"><%= seat.user.name.first.upcase %></div><span><%= seat.user.name %><%= " (вы)" if seat.user_id == current_user&.id %></span><b><%= seat.stack %> <i>◈</i></b></div>
-        <% end %>
-      </div>
-    </div>
-      <% if @current_seat %>
-        <div class="turn-banner"><span class="turn-indicator"></span><strong>Место занято</strong><span>Ваш стек за этим столом</span><small><%= @current_seat.stack %> ◈</small></div>
-        <%= button_to "Покинуть стол и вернуть фишки", leave_table_path(@table), method: :delete, class: "button button-quiet button-wide" %>
-        <p class="action-stub-note">Игровые раздачи появятся на следующем этапе.</p>
-      <% elsif logged_in? %>
-        <div class="observer-prompt">
-          <p>Бай-ин за этот стол: <strong><%= @table.buy_in %> фишек</strong>.</p>
-          <div>
-            <% if !@table.active? %>
-              <span>Стол закрыт</span>
-            <% elsif @seats.size >= @table.max_players %>
-              <span>Свободных мест нет</span>
-            <% elsif current_user.chip_balance < @table.buy_in %>
-              <%= link_to "Заработать фишки", earn_chips_path, class: "button button-small" %>
-            <% else %>
-              <%= button_to "Занять место", join_table_path(@table), method: :post, class: "button button-small" %>
-            <% end %>
-          </div>
-        </div>
-    <% else %>
-      <div class="observer-prompt">
-          <p>Войдите или зарегистрируйтесь, чтобы занять место за столом.</p>
-        <div><%= link_to "Войти", login_path, class: "button button-small" %><%= link_to "Регистрация", registration_path, class: "button button-quiet button-small" %></div>
-      </div>
-    <% end %>
-  </section>
-
-  <aside class="game-rail">
-    <section class="rail-panel players-panel"><div class="panel-heading"><h2>За столом</h2><span><%= @seats.size %> / <%= @table.max_players %></span></div>
-      <% if @seats.any? %>
-        <% @seats.each do |seat| %><div class="player-line <%= "player-line-you" if seat.user_id == current_user&.id %>"><div class="avatar avatar-player"><%= seat.user.name.first.upcase %></div><span><%= seat.user.name %><small><%= seat.user_id == current_user&.id ? "Ваше место" : "Игрок" %></small></span><b><%= seat.stack %></b></div><% end %>
-      <% else %>
-        <p class="empty-players">Пока никто не занял место.</p>
-      <% end %>
-    </section>
-    <section class="rail-panel"><div class="panel-heading"><h2>Условия стола</h2></div><div class="account-detail"><span>Малый блайнд</span><b><%= @table.small_blind %></b></div><div class="account-detail"><span>Большой блайнд</span><b><%= @table.big_blind %></b></div><div class="account-detail"><span>Бай-ин</span><b><%= @table.buy_in %> ◈</b></div></section>
-  </aside>
-</div>
+<%= turbo_stream_from "poker_table_#{@table.id}_user_#{current_user.id}" if @current_seat %>
+<%= render "game_view", table: @table, seats: @seats, hand: @hand, current_user: current_user %>

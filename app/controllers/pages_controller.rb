@@ -3,6 +3,7 @@ class PagesController < ApplicationController
     @table = PokerTable.find(params[:id])
     @seats = @table.table_seats.active.includes(:user).order(:created_at)
     @current_seat = @seats.find { |seat| seat.user_id == current_user&.id }
+    @hand = @table.poker_hands.active.first || @table.poker_hands.order(id: :desc).first
   end
 
   def earn

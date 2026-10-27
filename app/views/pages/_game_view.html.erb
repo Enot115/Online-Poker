@@ -1,0 +1,115 @@
+<% state = hand&.state || {} %>
+<% players = state.fetch("players", []) %>
+<% current_player = players.find { |player| player["user_id"] == state["current_player_id"] } %>
+<% current_seat = seats.find { |seat| seat.user_id == current_user&.id } %>
+<% current_hand_player = players.find { |player| player["user_id"] == current_user&.id } %>
+<% call_amount = current_hand_player ? [state.fetch("current_bet", 0) - current_hand_player.fetch("street_bet", 0), 0].max : 0 %>
+<% card_suits = { "C" => "♣", "D" => "♦", "H" => "♥", "S" => "♠" } %>
+<% other_positions = %w[seat-top seat-left seat-right seat-bottom-left seat-bottom-right] %>
+<% other_seat_index = 0 %>
+
+<%= turbo_frame_tag "game-view" do %>
+  <div class="game-layout">
+    <section class="game-column" aria-label="Игровой стол">
+      <div class="poker-table-wrap">
+        <div class="poker-table">
+          <div class="table-center-mark">♠ <span>POKER ROOM</span></div>
+          <div class="pot-display"><span><%= state["finished"] ? "РАЗДАЧА ЗАВЕРШЕНА" : state["street"]&.upcase || "ОЖИДАНИЕ ИГРОКОВ" %></span><strong><%= state.fetch("pot", 0) %> <i>◈</i></strong></div>
+          <div class="community-cards" aria-label="Общие карты">
+            <% state.fetch("board", []).each do |card| %>
+              <% suit = card_suits.fetch(card[-1]) %>
+              <span class="playing-card <%= "card-red" if %w[H D].include?(card[-1]) %>"><%= card[0...-1] == "T" ? "10" : card[0...-1] %><small><%= suit %></small></span>
+            <% end %>
+            <% (5 - state.fetch("board", []).size).times do %><span class="playing-card card-back">◆</span><% end %>
+          </div>
+          <% seats.each do |seat| %>
+            <% player = players.find { |entry| entry["seat_id"] == seat.id } %>
+            <% if seat.user_id == current_user&.id %>
+              <% position = "seat-you" %>
+            <% else %>
+              <% position = other_positions[other_seat_index % other_positions.length] %>
+              <% other_seat_index += 1 %>
+            <% end %>
+            <% stack = player ? player["stack"] : seat.stack %>
+            <% show_cards = player && (seat.user_id == current_user&.id || (state["showdown"] && !player["folded"])) %>
+            <div class="table-seat <%= position %> <%= "is-folded" if player&.dig("folded") %>">
+              <div class="avatar avatar-player"><%= seat.user.name.first.upcase %></div>
+              <span><%= seat.user.name %><%= " (вы)" if seat.user_id == current_user&.id %></span>
+              <b><%= stack %> <i>◈</i></b>
+              <% if player %>
+                <div class="hole-cards">
+                  <% if show_cards %>
+                    <% player.fetch("hole_cards").each do |card| %>
+                      <% suit = card_suits.fetch(card[-1]) %>
+                      <span class="playing-card <%= "card-red" if %w[H D].include?(card[-1]) %>"><%= card[0...-1] == "T" ? "10" : card[0...-1] %><small><%= suit %></small></span>
+                    <% end %>
+                  <% else %>
+                    <span class="playing-card card-back">◆</span><span class="playing-card card-back">◆</span>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <% if hand&.state&.dig("last_action") %>
+        <div class="turn-banner"><span class="turn-indicator"></span><strong><%= current_player&.fetch("user_id") == current_user&.id ? "Ваш ход" : current_player ? "Ход: #{current_player['name']}" : "Итог раздачи" %></strong><span><%= state["last_action"] %></span><small><%= state["pot"] %> ◈ в банке</small></div>
+      <% end %>
+
+      <% if current_seat && hand&.finished_at.nil? && current_hand_player %>
+        <% if state["current_player_id"] == current_user.id %>
+          <div class="game-actions">
+            <%= button_to "Сбросить", table_action_path(table), params: { move: "fold" }, class: "button button-action-fold" %>
+            <% if call_amount.zero? %>
+              <%= button_to "Чек", table_action_path(table), params: { move: "check" }, class: "button button-action-check" %>
+            <% else %>
+              <%= button_to "Уравнять #{call_amount} ◈", table_action_path(table), params: { move: "call" }, class: "button button-action-check" %>
+            <% end %>
+            <% if current_hand_player["stack"] > call_amount + state.fetch("minimum_raise", table.big_blind) %>
+              <%= form_with url: table_action_path(table), method: :post, class: "raise-form" do %>
+                <%= hidden_field_tag :move, "raise" %>
+                <%= number_field_tag :raise_to, state.fetch("current_bet", 0) + state.fetch("minimum_raise", table.big_blind), min: state.fetch("current_bet", 0) + state.fetch("minimum_raise", table.big_blind), max: current_hand_player["street_bet"] + current_hand_player["stack"], aria: { label: "Сумма рейза" } %>
+                <%= submit_tag "Повысить", class: "button" %>
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="action-stub-note">Дождитесь хода игрока <%= current_player&.fetch("name") %>.</p>
+        <% end %>
+      <% elsif current_seat && hand&.finished_at %>
+        <div class="hand-result"><strong><%= state.fetch("winner_hands", []).map { |winner| "#{winner['name']}: #{winner['hand']}" }.join(" · ") %></strong></div>
+        <div class="game-actions">
+          <% if seats.count { |seat| seat.stack.positive? } >= 2 %><%= button_to "Следующая раздача", next_hand_path(table), method: :post, class: "button" %><% end %>
+          <%= button_to "Покинуть стол", leave_table_path(table), method: :delete, class: "button button-quiet" %>
+        </div>
+      <% elsif current_seat %>
+        <div class="turn-banner"><span class="turn-indicator"></span><strong>Ожидание второго игрока</strong><span>Раздача начнётся автоматически, когда кто-то присоединится.</span></div>
+        <%= button_to "Покинуть стол и вернуть фишки", leave_table_path(table), method: :delete, class: "button button-quiet button-wide" %>
+      <% elsif logged_in? %>
+        <div class="observer-prompt">
+          <p>Бай-ин: <strong><%= table.buy_in %> фишек</strong>.</p>
+          <div>
+            <% if !table.active? %><span>Стол закрыт</span>
+            <% elsif table.poker_hands.active.exists? %><span>Идёт раздача. Вход будет доступен после её завершения.</span>
+            <% elsif seats.size >= table.max_players %><span>Свободных мест нет</span>
+            <% elsif current_user.chip_balance < table.buy_in %><%= link_to "Заработать фишки", earn_chips_path, class: "button button-small" %>
+            <% else %><%= button_to "Занять место", join_table_path(table), method: :post, class: "button button-small" %><% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="observer-prompt"><p>Войдите или зарегистрируйтесь, чтобы занять место за столом.</p><div><%= link_to "Войти", login_path, class: "button button-small" %><%= link_to "Регистрация", registration_path, class: "button button-quiet button-small" %></div></div>
+      <% end %>
+    </section>
+
+    <aside class="game-rail">
+      <section class="rail-panel players-panel">
+        <div class="panel-heading"><h2>За столом</h2><span><%= seats.size %> / <%= table.max_players %></span></div>
+        <% if seats.any? %>
+          <% seats.each do |seat| %><div class="player-line <%= "player-line-you" if seat.user_id == current_user&.id %>"><div class="avatar avatar-player"><%= seat.user.name.first.upcase %></div><span><%= seat.user.name %><small><%= seat.user_id == current_user&.id ? "Ваше место" : (players.find { |player| player["seat_id"] == seat.id }&.dig("folded") ? "Пас" : "В игре") %></small></span><b><%= players.find { |player| player["seat_id"] == seat.id }&.dig("stack") || seat.stack %></b></div><% end %>
+        <% else %><p class="empty-players">Пока никто не занял место.</p><% end %>
+      </section>
+      <% if state["winner_hands"].present? %><section class="rail-panel"><div class="panel-heading"><h2>Результат</h2></div><% state["winner_hands"].each do |winner| %><p><strong><%= winner["name"] %></strong> · <%= winner["hand"] %></p><% end %></section><% end %>
+    </aside>
+  </div>
+<% end %>

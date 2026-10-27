@@ -510,6 +510,12 @@ h1 span { color: var(--green); }
 .game-actions { display: grid; grid-template-columns: .9fr .9fr 1.3fr .8fr; gap: 8px; margin-top: 11px; }
 .game-actions .button { min-height: 44px; padding: 0 10px; font-size: 11px; }
 .game-actions .button span { margin-left: 4px; color: #ddedbd; font-size: 9px; }
+.game-actions > form { display: flex; min-width: 0; margin: 0; }
+.game-actions > form > .button { width: 100%; }
+.game-actions > form.raise-form { display: grid; grid-template-columns: minmax(74px, .7fr) 1fr; gap: 5px; }
+.raise-form input { width: 100%; min-width: 0; height: 44px; padding: 0 7px; border: 1px solid #d5e0d0; border-radius: 12px; background: #fff; color: var(--ink); font: 700 11px "DM Sans", sans-serif; }
+.raise-form input:focus { outline: 2px solid #8ab59b; outline-offset: 1px; }
+.hand-result { margin-top: 11px; padding: 12px 14px; border: 1px solid rgba(218, 187, 119, 0.32); border-radius: 12px; background: #f1ecde; color: #354839; font-size: 12px; }
 .button-action-fold { border: 1px solid #ead8d2; background: #fbf3f0; color: #a64d3a; }
 .button-action-fold:hover { background: #f7e8e2; color: #8c392b; }
 .button-action-check { border: 1px solid #cddccd; background: #fff; color: #3e704d; }
@@ -724,6 +730,8 @@ h1 span { color: var(--green); }
   .pot-display { top: 33%; }
   .game-actions { grid-template-columns: 1fr 1fr; }
   .game-actions .button { min-height: 42px; }
+  .game-actions > form { grid-column: span 1; }
+  .raise-form input { height: 42px; }
   .game-rail { grid-template-columns: 1fr 1fr; align-items: start; }
   .players-panel { grid-row: span 2; }
   .earn-page-heading { padding: 22px 0 18px; }
@@ -1028,6 +1036,8 @@ h1 span { color: var(--green); }
 .club-shell .observer-prompt .button-quiet { color: #35543c; }
 .club-shell .game-actions .button-action-fold { background: #f6e9e2; color: #994c3e; }
 .club-shell .game-actions .button-action-check { background: #eaf0e5; color: #3e704d; }
+.club-shell .raise-form input { border-color: #c5b995; background: #f6f2e7; }
+.club-shell .hand-result { border-color: rgba(218, 187, 119, 0.42); background: linear-gradient(145deg, #f6f2e7, #ebe5d5); color: #354839; }
 .club-shell .raise-button { border-color: #c5b995; background: #f6f2e7; color: #35543c; }
 .club-shell .raise-button:hover { background: #eee4ca; }
 .club-shell .game-rail .rail-panel { border-radius: 14px; }

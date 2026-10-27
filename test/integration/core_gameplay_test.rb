@@ -89,6 +89,40 @@ class CoreGameplayTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "seated player sees private cards and can fold through the table action endpoint" do
+    opponent = User.create!(name: "Соперник", email: "opponent@example.com", password: "secure-pass-123")
+    @user.credit_chips!(200)
+    opponent.credit_chips!(200)
+    table = PokerTable.create!(name: "Heads-up", small_blind: 10, big_blind: 20, buy_in: 200)
+    table.join!(@user)
+    table.join!(opponent)
+    hand = table.start_hand_if_ready!
+    sign_in(@user)
+
+    assert_equal @user.id, hand.state["current_player_id"]
+    get table_path(table)
+
+    assert_response :success
+    assert_select ".seat-you .hole-cards .playing-card", count: 2
+    assert_select ".seat-top .hole-cards .card-back", count: 2
+    assert_select "form[action='#{table_action_path(table)}'] input[name=move][value=fold]"
+
+    post table_action_path(table), params: { move: "fold" }
+    assert_redirected_to table_path(table)
+    follow_redirect!
+
+    assert_select ".hand-result", /Соперник/ 
+    assert_equal [opponent.id], hand.reload.state["winner_ids"]
+    assert_equal 210, table.table_seats.find_by!(user: opponent).stack
+    assert_equal 190, table.table_seats.find_by!(user: @user).stack
+
+    post next_hand_path(table)
+    assert_redirected_to table_path(table)
+    next_hand = table.poker_hands.active.sole
+    assert_not_equal hand.id, next_hand.id
+    assert_includes [@user.id, opponent.id], next_hand.state["current_player_id"]
+  end
+
   test "a player can earn chips, join a table, and cash out" do
     sign_in(@user)
     post solve_daily_challenge_path, params: { answer: @challenge.answer, challenge_id: @challenge.id }

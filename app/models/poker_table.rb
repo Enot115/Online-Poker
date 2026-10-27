@@ -1,9 +1,11 @@
 class PokerTable < ApplicationRecord
   class TableFullError < StandardError; end
   class AlreadySeatedError < StandardError; end
+  class HandInProgressError < StandardError; end
 
   has_many :table_seats, dependent: :destroy
   has_many :players, through: :table_seats, source: :user
+  has_many :poker_hands, dependent: :destroy
 
   scope :open, -> { where(active: true) }
 
@@ -16,6 +18,7 @@ class PokerTable < ApplicationRecord
   def join!(user)
     with_lock do
       raise ActiveRecord::RecordNotFound, "Table is not active" unless active?
+      raise HandInProgressError, "A hand is already in progress" if poker_hands.active.exists?
       raise AlreadySeatedError, "Player is already seated at this table" if table_seats.active.exists?(user:)
       raise TableFullError, "Table is full" if table_seats.active.count >= max_players
 
@@ -24,6 +27,10 @@ class PokerTable < ApplicationRecord
         table_seats.create!(user:, stack: buy_in)
       end
     end
+  end
+
+  def start_hand_if_ready!
+    PokerHand.start_for!(self)
   end
 
   private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_10_13_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_27_000000) do
   create_table "challenge_completions", force: :cascade do |t|
     t.integer "daily_challenge_id", null: false
     t.integer "user_id", null: false
@@ -35,6 +35,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_13_000000) do
     t.index ["active_on", "hour"], name: "index_daily_challenges_on_active_on_and_hour", unique: true
     t.check_constraint "hour IS NULL OR (hour >= 0 AND hour < 24)", name: "daily_challenges_hour_valid"
     t.check_constraint "reward_chips > 0", name: "daily_challenges_reward_positive"
+  end
+
+  create_table "poker_hands", force: :cascade do |t|
+    t.integer "poker_table_id", null: false
+    t.json "state", default: {}, null: false
+    t.datetime "finished_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["poker_table_id"], name: "index_active_poker_hand_per_table", unique: true, where: "finished_at IS NULL"
+    t.index ["poker_table_id"], name: "index_poker_hands_on_poker_table_id"
   end
 
   create_table "poker_tables", force: :cascade do |t|
@@ -78,6 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_13_000000) do
 
   add_foreign_key "challenge_completions", "daily_challenges"
   add_foreign_key "challenge_completions", "users"
+  add_foreign_key "poker_hands", "poker_tables"
   add_foreign_key "table_seats", "poker_tables"
   add_foreign_key "table_seats", "users"
 end
