@@ -58,7 +58,7 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
 
     post login_path, params: { email: user.email, password: "secure-pass-123" }
 
-    session_cookie = response.headers["Set-Cookie"].to_s.lines.find do |cookie|
+    session_cookie = Array(response.headers["Set-Cookie"]).find do |cookie|
       cookie.start_with?("_online_poker_session=")
     end
     assert session_cookie, "expected the session cookie to be set"
@@ -103,10 +103,11 @@ class AccountSessionsTest < ActionDispatch::IntegrationTest
   test "lobby and core prototype screens render" do
     DailyChallenge.create!(
       title: "Разминка перед игрой",
-      prompt: "8 × 7 + 14 = ?",
-      answer: "70",
-      reward_chips: 250,
-      active_on: Date.current
+      prompt: '\int_0^1\left(4x^3+2x\right)\,dx',
+      answer: "2",
+      reward_chips: 100,
+      active_on: Date.current,
+      hour: Time.current.hour
     )
 
     get root_path

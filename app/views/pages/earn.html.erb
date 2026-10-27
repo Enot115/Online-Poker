@@ -1,17 +1,20 @@
 <% content_for :title, "Задача на фишки" %>
+<% content_for :head do %>
+  <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js", defer: true %>
+<% end %>
 
-<div class="screen-topline"><%= link_to "← Лобби", root_path, class: "back-link" %><span class="prototype-label"><span></span> ДЕМО-ЗАДАНИЕ</span></div>
-<section class="earn-page-heading"><p class="eyebrow">ИГРАЙТЕ БЕЗ ДЕНЕЖНЫХ ПОПОЛНЕНИЙ</p><h1>Фишки за <span>смекалку.</span></h1><p class="screen-lead">Решите короткую задачу и получите фишки для игры за столом.</p></section>
+<div class="screen-topline"><%= link_to "← Лобби", root_path, class: "back-link" %><span class="prototype-label"><span></span> ПОЧАСОВЫЙ ЧЕЛЛЕНДЖ</span></div>
+<section class="earn-page-heading"><p class="eyebrow">ИГРАЙТЕ БЕЗ ДЕНЕЖНЫХ ПОПОЛНЕНИЙ</p><h1>Фишки за <span>смекалку.</span></h1><p class="screen-lead">Вычислите интеграл и получите фишки для игры за столом.</p></section>
 
 <div class="earn-page-grid">
   <section class="challenge-card">
     <% if @challenge %>
-      <div class="challenge-card-head"><div><span class="challenge-kicker">ЗАДАЧА ДНЯ</span><h2><%= @challenge.title %></h2></div><span class="difficulty-tag"><i></i> Лёгкая</span></div>
-    <div class="challenge-progress"><span>Задание 1 из 1</span><div><i></i></div><span>1 мин</span></div>
-      <div class="problem-stage"><span class="problem-label">Найдите значение выражения</span><div class="equation"><%= @challenge.prompt %></div><span class="problem-decoration">×</span></div>
+      <div class="challenge-card-head"><div><span class="challenge-kicker">ЗАДАЧА ЧАСА</span><h2><%= @challenge.title %></h2></div><span class="difficulty-tag"><i></i> Сложная</span></div>
+    <div class="challenge-progress"><span>Новая задача каждый час</span><span>Награда: <%= @challenge.reward_chips %> фишек</span></div>
+      <div class="problem-stage"><span class="problem-label">Вычислите значение интеграла</span><div class="equation">\[<%= @challenge.prompt %>\]</div><span class="problem-decoration">∫</span></div>
       <% if logged_in? && !@challenge_completed %>
         <%= form_with url: solve_daily_challenge_path, method: :post, class: "answer-form" do %>
-          <%= label_tag :answer, "Ваш ответ" %><%= number_field_tag :answer, nil, required: true, inputmode: "numeric", placeholder: "Введите число" %><button type="submit" class="button">Проверить ответ <span aria-hidden="true">→</span></button>
+          <%= hidden_field_tag :challenge_id, @challenge.id %><%= label_tag :answer, "Ваш ответ" %><%= number_field_tag :answer, nil, required: true, inputmode: "numeric", placeholder: "Введите число" %><button type="submit" class="button">Проверить ответ <span aria-hidden="true">→</span></button>
         <% end %>
       <% elsif @challenge_completed %>
         <p class="challenge-completed">Задача решена. Награда уже зачислена.</p>
@@ -26,6 +29,6 @@
   </section>
   <aside class="earn-side-column">
     <section class="balance-panel"><p class="eyebrow">ВАШ БАЛАНС</p><div class="balance-large"><%= logged_in? ? current_user.chip_balance : "—" %> <i>◈</i></div><span>игровых фишек</span><div class="balance-divider"></div><div class="balance-tip"><span>◎</span><p>Фишки нельзя купить. Получайте их за задачи и используйте за покерными столами.</p></div></section>
-    <section class="streak-panel"><div class="panel-heading"><h2>Серия задач</h2><span>Эта неделя</span></div><div class="week-days"><div class="day-done"><i>✓</i><span>ПН</span></div><div class="day-done"><i>✓</i><span>ВТ</span></div><div class="day-done"><i>✓</i><span>СР</span></div><div class="day-current"><i>•</i><span>ЧТ</span></div><div><i>·</i><span>ПТ</span></div><div><i>·</i><span>СБ</span></div><div><i>·</i><span>ВС</span></div></div><p>Решайте задачи каждый день, чтобы не прерывать серию.</p></section>
+    <section class="streak-panel"><div class="panel-heading"><h2>Серия задач</h2><span>Эта неделя</span></div><div class="week-days"><% @challenge_week.each do |day| %><% day_classes = [] %><% day_classes << "day-done" if day[:completed] %><% day_classes << "day-current" if day[:current] %><div class="<%= day_classes.join(" ") %>"><i><%= day[:completed] ? "✓" : day[:current] ? "•" : "·" %></i><span><%= day[:label] %></span></div><% end %></div><p>Решите хотя бы одну задачу в день, чтобы отметить его в серии.</p></section>
   </aside>
 </div>

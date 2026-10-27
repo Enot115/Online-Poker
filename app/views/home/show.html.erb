@@ -41,12 +41,12 @@
 
   <aside class="lobby-rail">
     <section class="earn-card">
-      <div class="earn-card-top"><span class="earn-icon" aria-hidden="true">＋</span><span class="tag tag-light">ЕЖЕДНЕВНО</span></div>
+      <div class="earn-card-top"><span class="earn-icon" aria-hidden="true">＋</span><span class="tag tag-light">КАЖДЫЙ ЧАС</span></div>
       <p class="eyebrow">НЕ ХВАТАЕТ ФИШЕК?</p><h2>Решите пример.<br>Продолжайте игру.</h2>
       <p>Правильный ответ пополнит игровой баланс.</p>
       <div class="earn-reward"><span>Награда за задачу</span><strong>+<%= @challenge&.reward_chips || 0 %> <i>◈</i></strong></div>
       <%= link_to "Перейти к задаче", earn_chips_path, class: "button button-light button-wide" %>
-      <div class="progress-label"><span>Сегодняшняя задача</span><span><%= @challenge_completed ? "1 / 1" : "0 / 1" %></span></div><div class="progress-track"><span class="<%= "is-complete" if @challenge_completed %>"></span></div>
+      <div class="progress-label"><span>Задача этого часа</span><span><%= @challenge_completed ? "1 / 1" : "0 / 1" %></span></div><div class="progress-track"><span class="<%= "is-complete" if @challenge_completed %>"></span></div>
     </section>
 
     <section class="quick-profile">

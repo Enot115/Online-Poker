@@ -6,8 +6,29 @@ class PagesController < ApplicationController
   end
 
   def earn
-    @challenge = DailyChallenge.today
+    @challenge = DailyChallenge.current_hour
     @challenge_completed = @challenge&.challenge_completions&.exists?(user: current_user) || false
+
+    week_start = Date.current.beginning_of_week
+    week_dates = 7.times.map { |offset| week_start + offset.days }
+    completed_dates = if logged_in?
+      current_user.challenge_completions
+        .joins(:daily_challenge)
+        .where(daily_challenges: { active_on: week_dates })
+        .pluck("daily_challenges.active_on")
+    else
+      []
+    end
+
+    weekday_labels = %w[ВС ПН ВТ СР ЧТ ПТ СБ]
+    @challenge_week = week_dates.map do |date|
+      {
+        date:,
+        label: weekday_labels[date.wday],
+        completed: completed_dates.include?(date),
+        current: date == Date.current
+      }
+    end
   end
 
   def profile

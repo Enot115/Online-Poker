@@ -6,6 +6,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= yield :head %>
   </head>
   <body class="club-shell <%= "lobby-shell" if controller_name == "home" %>">
     <header class="app-header">

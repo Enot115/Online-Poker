@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_10_09_210000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_13_000000) do
   create_table "challenge_completions", force: :cascade do |t|
     t.integer "daily_challenge_id", null: false
     t.integer "user_id", null: false
@@ -31,7 +31,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_09_210000) do
     t.date "active_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["active_on"], name: "index_daily_challenges_on_active_on", unique: true
+    t.integer "hour"
+    t.index ["active_on", "hour"], name: "index_daily_challenges_on_active_on_and_hour", unique: true
+    t.check_constraint "hour IS NULL OR (hour >= 0 AND hour < 24)", name: "daily_challenges_hour_valid"
     t.check_constraint "reward_chips > 0", name: "daily_challenges_reward_positive"
   end
 

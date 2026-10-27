@@ -537,12 +537,13 @@ h1 span { color: var(--green); }
 .challenge-card-head h2 { margin: 5px 0 0; font: 700 20px "Manrope", sans-serif; }
 .difficulty-tag { display: flex; align-items: center; gap: 6px; color: #7c815f; font-size: 10px; }
 .difficulty-tag i { width: 6px; height: 6px; border-radius: 50%; background: #d1ac48; }
-.challenge-progress { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 11px; margin: 19px 0 13px; color: #859087; font-size: 9px; }
+.challenge-progress { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 11px; margin: 19px 0 13px; color: #859087; font-size: 10px; }
 .challenge-progress div { height: 3px; overflow: hidden; border-radius: 4px; background: #e9ede6; }
 .challenge-progress div i { display: block; width: 18%; height: 100%; background: #6d9d6d; }
 .problem-stage { position: relative; min-height: 180px; display: grid; align-content: center; justify-items: center; gap: 15px; overflow: hidden; border: 1px solid #e2e9dc; border-radius: 4px; background: radial-gradient(ellipse at 50% 20%, #f6f8f0, #eaf0e5); }
 .problem-label { color: #738074; font-size: 11px; }
-.equation { color: #23382a; font: 700 38px "Manrope", sans-serif; }
+.equation { max-width: 100%; overflow-x: auto; padding: 0 8px; color: #23382a; font: 700 38px "Manrope", sans-serif; }
+.equation mjx-container[display="true"] { min-width: max-content; margin: 0 auto !important; }
 .equation small { padding: 0 3px; color: #7a9578; font-size: 21px; }
 .equation b { color: var(--green); }
 .problem-decoration { position: absolute; right: 22px; bottom: -38px; color: #dfe8d9; font: 100px "Manrope", sans-serif; transform: rotate(-14deg); }
@@ -577,6 +578,8 @@ h1 span { color: var(--green); }
 .week-days .day-done i { border-color: #d4e4d1; background: #edf4e9; }
 .week-days .day-current { color: #8a733a; }
 .week-days .day-current i { border-color: #e8dba7; background: #f7f0d9; }
+.week-days .day-current.day-done { color: #53835d; }
+.week-days .day-current.day-done i { border-color: #d4e4d1; background: #edf4e9; }
 .streak-panel > p { margin: 13px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
 .profile-hero { display: flex; align-items: center; justify-content: space-between; gap: 35px; padding: 32px 0 27px; border-bottom: 1px solid var(--line); }
 .profile-identity { display: flex; align-items: center; gap: 17px; min-width: 0; }
@@ -929,7 +932,7 @@ h1 span { color: var(--green); }
   background: radial-gradient(ellipse at 50% 20%, #315b42, #19382b);
 }
 .club-shell .problem-label { color: #d5ddc9; }
-.club-shell .equation { color: #f3eddb; }
+.club-shell .equation { color: #f3eddb; font-size: 30px; }
 .club-shell .equation small, .club-shell .equation b { color: #e0c27b; }
 .club-shell .problem-decoration { color: rgba(224, 194, 123, 0.16); }
 .club-shell .challenge-reward {

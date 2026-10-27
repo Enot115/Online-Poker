@@ -11,9 +11,4 @@
   end
 end
 
-DailyChallenge.find_or_create_by!(active_on: Date.current) do |challenge|
-  challenge.title = "Разминка перед игрой"
-  challenge.prompt = "8 × 7 + 14 = ?"
-  challenge.answer = "70"
-  challenge.reward_chips = 250
-end
+DailyChallenge.current_hour
